@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til input - Kjenne til textarea - Kjenne til select - Kjenne til radio - Kjenne til checkbox
+
+Å lage / håndtere data fra skjemaer (form) er veldig vanlig å gjøre som utvikler. Det finnes mange biblioteker som gjør det å jobbe med skjemaer mye enklere, men målet i dette kurset er å lære hvordan vi kan gjøre det selv.
+
+Under ser du en rekke eksempler på hvordan vi kan jobbe med skjemaer.
+
+Basic form:
+
+I dette eksempelet ser du hvordan vi kan ha uncontrolled og controlled verdier. I første input bruker vi ikke value attributtet. Det medfører at React ikke kan kontrollere hva disse verdiene er. For å få tilgang til verdien må vi da bruke andre virkemidler som ikke er fokus i dette kurset.
+
+I andre input settes value. React har da kontroll på input-feltet og hva verdiene til input-feltet er til enhver tid.
+
+Det som vil skje nedenfor er at endringer vi gjør i første input fanges opp av det andre feltet grunnet endringene i state. Endringen i state skjer ved at handleChange metoden trigges via onChange eventet. Når vi skriver i den andre inputen vil første input ikke få med seg de endringene, da den ikke har noen value.
+
+// components/BasicForm.js
+import { useState } from "react";
+
+export default function BasicForm() {
+  // Klargjør useState hook og setter default verdi 
+  const [value, setValue] = useState("Default");
+
+  // Har en funksjon som trigges når vi oppdaterer input
+  const handleChange = (event) => {
+    setValue(event.currentTarget.value);
+  };
+
+  return (
+    <>
+      {/* endres ikke da den ikke har value attributten */}
+      <input defaultValue={value} onChange={handleChange} />
+      <input value={value} onChange={handleChange} />
+    </>
+  );
+};
+
+Textarea:
+
+Textarea fungerer som vanlig input og bruker onChange som tidligere.
+
+// components/Textarea.js
+import { useState } from "react";
+
+export default function TextArea() {
+  const [text, setText] = useState("Lorem ipsum data");
+
+  function handleChange(e) {
+    setText(e.currentTarget.value);
+  }
+
+  return (
+    <>
+      <textarea onChange={handleChange} value={text} />
+      <pre>{text}</pre>
+    </>
+  );
+}
+
+Select:
+
+Select fungerer som vanlig input og bruker onChange.
+
+// components/SelectSingle.js
+import { useState } from "react";
+
+export default function SelectSingle() {
+  // bruker state til å lagre hvilken verdi vi har valgt
+  const [selected, setSelected] = useState("");
+
+  // funksjon som trigges når vi velger en verdi i nedtrekksmenyen
+  function handleChange(e) {
+    setSelected(e.target.value);
+  }
+
+  return (
+    <>
+      {/* Viser hvordan vi kan bruke endringene i state til 
+      å toggle knappen av eller på */}
+      <button disabled={selected === ""}>Button</button>
+      {/* onChange event for å fange endringer */}
+      {/* value settes til valgt verdi (default i dette tifellet 
+      er tom streng "") */}
+      <select onChange={handleChange} value={selected}>
+        {/* disabled betyr at den ikke kan velges på nytt */}
+        <option value="" disabled>
+          Velg en verdi
+        </option>
+        <option value="bike">Bike</option>
+        <option value="car">Car</option>
+        <option value="train">Train</option>
+      </select>
+      <pre>{selected}</pre>
+    </>
+  );
+}
+
+Radio:
+
+Når vi jobber med radio må vi ha kontroll på hvilken radio-knapp som er aktiv. Det gjør vi ved å bruke checked attributten på input.
+
+// components/Radio.js
+import { useState } from "react";
+
+export default function Radio() {
+  // bruker state til å lagre hvilken verdi vi har valgt
+  const [selected, setSelected] = useState("");
+
+  // funksjon som trigges når vi velger en verdi i nedtrekksmenyen
+  function handleChange(e) {
+    setSelected(e.target.value);
+  }
+
+  return (
+    <>
+      {/* 
+        Trigger onChange når vi velger en radio-knappen
+        Bruker checked til å "vise" hvilken radio som er valgt 
+        basert på verdien den har 
+      */}
+      {/*
+        Legg merke til at hver input har samme id. Det er det som gjør at 
+        radio-knappene virker som de gjør
+      */}
+      <input
+        type="radio"
+        onChange={handleChange}
+        checked={selected === "radio1"}
+        value="radio1"
+        id="radio"
+      />
+      Radio 1
+      <input
+        type="radio"
+        onChange={handleChange}
+        checked={selected === "radio2"}
+        value="radio2"
+        id="radio"
+      />
+      Radio 2
+      <input
+        type="radio"
+        onChange={handleChange}
+        checked={selected === "radio3"}
+        value="radio3"
+        id="radio"
+      />
+      Radio 3<pre>{selected}</pre>
+    </>
+  );
+};
+
+export default Radio;
+
+Checkbox:
+
+Når vi bruker checkbox må vi som med radio ha kontroll på hvilken boks som er valgt. Forskjellen her er at vi kan velge flere checkboxer.
+
+I første eksempel har hver enkelt boks en metode som trigges når vi sjekker boksen samt lagring av state.
+
+// components/Checkbox.js
+import { useState } from "react";
+
+export default function Checkbox() {
+  // Gjør klar useState for de tre checkboxene vi har
+  const [burger, setBurger] = useState(false);
+  const [pizza, setPizza] = useState(false);
+  const [icecream, setIcecream] = useState(false);
+
+  // funksjon som trigges når vi trykker på første checkbox
+  function handleBurger(e) {
+    setBurger(!burger);
+  }
+
+  function handlePizza(e) {
+    setPizza(!pizza);
+  }
+
+  function handleIcecream(e) {
+    setIcecream(!icecream);
+  }
+
+  return (
+    <>
+      {/*
+        Trigger onChange når vi velger en checkbox-knappen
+        Bruker checked til å "vise" hvilke checkbox som er 
+        valgt basert på verdien den har
+      */}
+      <input
+        type="checkbox"
+        onChange={handleBurger}
+        checked={burger}
+        value="burger"
+      />
+      Check 1
+      <input
+        type="checkbox"
+        onChange={handlePizza}
+        checked={pizza}
+        value="pizza"
+      />
+      Check 2
+      <input
+        type="checkbox"
+        onChange={handleIcecream}
+        checked={icecream}
+        value="icecream"
+      />
+      Check 3
+      <div>
+        Valgte bokser:
+        <span>Boks 1 {burger.toString()}</span>
+        <span>Boks 2 {pizza.toString()}</span>
+        <span>Boks 3 {icecream.toString()}</span>
+      </div>
+    </>
+  );
+};
+
+I denne oppgraderte versjonen har vi kun en metode som trigges når vi gjør endringer på checkboxen. For at vi skal ha kontroll på hvilke bokser som er sjekket må vi enten ha en liste som holder på oversikten eller et objekt.
+
+Her brukes et objekt til lagre hvilke bokser som er sjekket av.
+
+// components/CheckboxBetter.js
+import { useState } from "react";
+
+export default function CheckboxBetter() {
+  // bruker state til å lagre hvilken verdi vi har valgt
+  const [selected, setSelected] = useState({});
+
+  // funksjon som trigges når vi sjekker av en boks
+  function handleChange(event) {
+    // henter verdien til sjekkboksen som ble trykket på
+    const value = event.target.value;
+    // prevState her nede er den "gamle" staten
+    // vi trenge prevState for å få med oss den "gamle" staten samt endringene
+    // [value] bruker vi for å identifisere checkboxen
+    // !prevState[value] bruker vi for å sette "true" 
+    // eller "false" om boksen er sjekket av
+    setSelected((prevState) => ({
+      ...prevState,
+      [value]: !prevState[value]
+    }));
+  }
+
+  return (
+    <>
+      {/* 
+        Trigger onChange når vi velger en checkbox-knappen
+        Bruker checked til å "vise" hvilke checkbox som er 
+        valgt basert på verdien den har 
+      */}
+      <input
+        type="checkbox"
+        onChange={handleChange}
+        checked={!!selected["burger"]}
+        value="burger"
+      />
+      Check 1
+      <input
+        type="checkbox"
+        onChange={handleChange}
+        checked={!!selected["pizza"]}
+        value="pizza"
+      />
+      Check 2
+      <input
+        type="checkbox"
+        onChange={handleChange}
+        checked={!!selected["icecream"]}
+        value="icecream"
+      />
+      Check 3<pre>{JSON.stringify(selected)}</pre>
+    </>
+  );
+};
+
+
+</script>
+</body>
+</html>

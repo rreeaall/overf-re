@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* Mål: Overordnet kjenne til box modellen i css. Kjenne til padding, margin og border. Kjenne til box-sizing og hva den bidrar til. */
+
+        /* Box modellen brukes til å manipulere avstand mellom elementer. Det er den vi jobber med når vi jobber med border, margin og padding.
+        
+        - Margin sørger for å gi avstand mellom ulike html elementer
+        - Border gir en ramme rundt selve html elementet
+        - Padding gir luft mellom border og selve teksten til html elementet
+        - Content box er en usynlig boks som ligger rundt selve innholdet */
+
+        /* For at box-modellen skal gjelde må elementet være et block-element (inline-block / block). */
+
+        Box sizing:
+        /* By default blir padding, margin og border lagt til størrelsen (bredden eller høyden) på innholdet, om vi ikke setter en absolutt størrelse (eks. width: 300px). Det kan skape uønsket design da boksen "tvinger" seg ut av containeren sin (se eksempel). Ved 'box-sizing: border-box;' blir padding og border kalkulert ut fra maksbredden på boksen og "tvinger" inneholder innover. */
+
+        Uten box-sizing (tvinger seg ut fra den rød rammen):
+        section {
+        border: 1px solid red;
+        }
+
+        article {
+        /* display: inline; */ /* inline fjerner box-model setting */
+        width: 100%;
+        margin-bottom: 50px;
+        padding: 15px; /* uten box-sizing legges 15px til bredden */
+        border: 1px solid blue; /* uten box-sizing blir 1px lagt til bredde */
+        background: #ccc;
+        }
+
+        Med box-sizing: border-box (tilpasses den røde rammen):
+        * {
+        box-sizing: border-box;
+        }
+
+        article {
+        width: 100%;
+        margin-bottom: 50px;
+        padding: 15px;
+        border: 1px solid blue;
+        background: #ccc;
+        }
+        kodeeksempel docesandbox: https://codesandbox.io/s/css-box-model-qo6lw?from-embed
+
+        Dokumentasjon:
+        https://web.dev/learn/css/box-model/
+
+        https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model
+
+
+    </style>
+</head>
+<body>
+    
+</body>
+</html>

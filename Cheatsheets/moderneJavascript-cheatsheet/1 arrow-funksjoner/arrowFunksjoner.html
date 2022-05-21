@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+// Mål: - Kjenne til hvordan arrow funksjoner brukes - Kjenne til ulike måter å bruke arrow funksjoner på
+
+Arrow funksjoner:
+
+I ES2015 fikk vi enda en måte å skrive funksjoner på. I prinsippet fungerer det på samme måte som tidligere, men gjør at vi får slankere kode som er lettere å lese. Når jeg lærte meg arrow funksjoner synes jeg det var utfordrende å forholde seg til alle måtene de kan skrives på. Det viktigste er å kjenne til hovedformen. Under ser du en oversikt over ulike måter å skrive de på.
+
+Hovedformen til arrow funksjoner:
+
+const calculate = (one, two) => { /* Utføre noe */ return one + two }
+
+Andre måter å skrive arrow funksjoner:
+
+// => { return 'EcmaScript'}
+const implisittReturn = () => 'EcmaScript'; 
+
+// Trenger ikke { ... } eller return når det ikke gjøres noe annet enn 
+// å returnere en verdi
+const simpleOperation = (number) => number * number; 
+
+// Kan også fjerne () rundt parameteren
+const simpleOperation2 = number => number * number; 
+
+ // Må bruke { ... }
+const multipleOperations = number => { const multi = number * number; return multi; };
+
+// Flere params krever ()
+const multipleParams = (one, two) => one * two;
+
+// Kan bruke default som ved vanlig funksjoner
+const defaultParam = (number = 10) => number * number;
+
+// arrowRest(1,2,3,4,5,6) // [ 1, 2, [3, 4,5,6] ]
+const arrowRest = (one, two, ...rest) => [one, two, rest];
+
+// Må bruke () rundt retur verdien. objectLiteral(1337) gir {age: 1337}
+const objectLiteral = number => ({age: number});
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+</script>
+</body>
+</html>

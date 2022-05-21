@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+/* Mål:
+- Overordnet kjenne til CSS Grid
+- Kjenne til hva enheten fraction og hva den brukes til
+- Forstå hvordan bruke grid til å justere layouten */
+
+Grid brukes til å plassere elementer vertikalt og horisontalt.
+
+Hvordan bruke grid?
+
+For å bruke grid må vi på elementet som ligger rundt andre HTML-elementer ha display: grid. Vi kan da begynne å bruke alle grid-verdiene.
+
+Et enkelt eksempel kan se slik ut (du kan se mange flere i kodeeksempelet nedenfor):
+html:
+<section class="grid1">
+  <article class="grid-item">1.1</article>
+  <article class="grid-item">2</article>
+  <article class="grid-item">3</article>
+  <article class="grid-item">4</article>
+</section>
+
+css av html-en:
+/* Gir meg 2x2 Grid hvor hver boks er 225 px og har 10px mellomrom */
+.grid1 {
+  display: grid;
+  grid-template-columns: 225px 225px;
+  grid-template-rows: 225px 225px;
+  gap: 10px;
+}
+
+/* Denne er kun brukt til å gi selve boksen styling */
+.grid-item {
+  border: 1px solid #333;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+Fraction:
+
+Når vi bruker grid bruker vi ofte fr (fraction) til å bestemme størrelsen på hvert grid-element.
+
+Kort forklart handler det om hvordan vi deler opp gridden i rader og kolonner. By default er 1fr 100%, men hvis vi deler opp en grid slik:
+
+grid-template-columns: 1fr 2fr 200px; så vil midterste element (2fr) ta opp 2x så mye plass som 1fr.
+
+For å lære mer om Grid og fr anbefaler jeg å lese bruk av fr eller lær mer om grid.
+Link til bruk av fr: https://hackernoon.com/understanding-css-grids-fractional-units-fr-the-easy-way-5f43ee008f29
+
+link til bruk av grid: https://css-tricks.com/snippets/css/complete-guide-grid/
+
+Kodeeksempler av Grid:
+https://0hy6t.csb.app/
+
+Samme link på code sandbox: https://codesandbox.io/s/css-grid-0hy6t?from-embed
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout
+</style>
+</head>
+<body>
+    
+</body>
+</html>

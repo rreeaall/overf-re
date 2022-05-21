@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva fetch er - Kjenne til minimum config vi må bruke i fetch - Kjenne til hvordan vi kan håndtere promises fra fetch - Kjenne til forskjellen mellom axios og fetch
+
+Når vi skal hente data fra via APIer kan vi bruke verktøyene fetch eller axios. Både fetch og axios er promise basert. Det vil si at når de brukes returneres en promise tilbake som må håndteres, enten via .then() eller via async/await. Vi venter på svaret og må derfor håndteres asynkront.
+
+Fetch konfigurasjon:
+
+Når vi skal sende en forespørsel til et API med fetch eller axios må vi minimum ha med:
+- metoden vi skal bruke (GET, POST, PUT, PATCH, DELETE) - mer om dette i leksjon om API
+- adressen vi skal sende forespørsel til
+- eventuelt dataen som skal sendes med. Dataen kan f.eks være informasjon fra et skjema, et bilde e.l
+
+Fetch response (håndtere svaret vi får tilbake):
+
+Svaret vi får tilbake må vi håndtere i to runder. Først må vi håndtere selve Promisen, deretter må vi konvertere dataen vi fikk tilbake til et format vi kan lese.
+
+Vi har flere formater som kan brukes, hvor den vanligste er å konverte informasjonen til json. Axios gjør dette automagisk, mens vi i fetch må bruke et metode kalt .json().
+
+Eksempel på bruk av fetch med .then()
+
+// bruker fetch med en url som første param
+fetch("http://example.com/movies.json")
+  // bruker .then() for å vente på svaret
+  // starter prosessen med å gjøre som svaret til json
+  .then((response) => response.json())
+  // venter på at omgjøringen til json skal bli ferdig
+  .then((data) => console.log(data))
+  // håndterer eventuelle feil som oppstår
+  .catch((err) => console.log(err))
+
+Eksempel på bruk av fetch med async/await
+
+// bruker async nøkkelordet for å kunne bruke await
+const getMovies = async () => {
+  // bruker fetch med en url som første param
+  const response = await fetch("http://example.com/movies.json");
+  // bruker try/catch for å håndtere eventuelle feil som oppstår når vi skal 
+  // konvertere til .json()
+  try {
+    // starter prosessen med å gjøre som svaret til json
+    // venter på svaret
+    const data = await response.json();
+  } catch (error) {
+    // logger feilmeldingen
+    console.log(error);
+  }
+}
+
+Fetch vs Axios:
+
+Fordelen med fetch er at moderne nettlesere har fetch som innebygget standard. Vi må dermed ikke installerer noen pakker slik vi må med axios. Ulempen er at den mangler en del finesser som axios har.
+
+Fordeler med Axios:
+
+Axios er er mye brukt bibliotek for å gjøre det samme som Fetch men har noen fordeler:
+- Mer vi kan putte inn i configen. Link til config: https://github.com/axios/axios#request-config
+- Axios er bakoverkompatibelt med f.eks IE (Internet Explorer)
+- Kan få en forespørsel til å avbrytes om den tar for lang tid (timeout)
+- Axios håndterer responsen automagisk uten å måtte si .json()
+- Kan intercepte requesten - koble oss på requesten. Link til interceptor: https://github.com/axios/axios#interceptors
+- Enklere å sette opp konfigurasjonen til en forespørsel - Request metoden: https://github.com/axios/axios#request-method-aliases
+- Kan sende med en token som gjør at vi kan kansellere request
+
+Eksempel på bruk av axios med .then():
+
+// må importere axios da det er en pakke vi må installere med:
+// yarn add axios
+// npm install axios
+import axios from 'axios';
+
+// bruker et objekt med url og method for å si hvor og hvordan vi skal hente data
+axios({url: '', method:'get'})
+  .then(response => {
+    // blir gjort om til json automagisk. Kan derfor inspisere response på denne 
+    // måten
+    console.log(response.status);
+  })
+  .catch(err => console.error(err))
+  
+
+Eksempel på bruk av axios med async/await
+
+import axios from 'axios';
+
+// bruker async nøkkelordet
+const getMovies = async () => {
+// bruker axios.get() for å si at vi skal hente data. Første param blir da url
+// bruker try/catch for å håndtere eventuelle feil som oppstår når vi skal hente
+// data
+try {  
+    // venter på svaret
+    const response = await axios.get("http://example.com/movies.json");
+    const data = await response?.data;
+    return data
+  } catch (error) {
+    // logger feilmeldingen
+    console.log(error);
+  }
+}
+
+</script>
+</body>
+</html>

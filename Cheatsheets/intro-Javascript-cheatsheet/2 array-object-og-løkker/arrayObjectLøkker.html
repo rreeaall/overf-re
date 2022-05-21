@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<script>
+// Mål: - Forstå hvordan bruke arrays (lister) - Forstå hvordan bruke objekter - Forstå hvordan bruke løkker
+
+Arrays:
+
+Arrays er lister med data som kan inneholde alle datatyper.
+
+let datatypeArray = [true, 'string', 23];
+
+// Hente ut første element i arrayen
+console.log(datatypeArray[0]);
+
+// Antall elementer i arrayen
+console.log(datatypeArray.length);
+
+Array metoder:
+.push() og .pop()
+
+.push() og .pop() kan brukes for å legge til eller fjerne elementer.
+
+datatypeArray.push('legger til denne stringen');
+
+datatypeArray.pop(); // Fjerner siste element og returnerer fjernet element
+
+.forEach():
+
+For hvert element i arrayen, gjør dette. Dette endrer ikke den orginale arrayen.
+
+const liste = [56, 43, 72, 61];
+
+liste.forEach((element) => {
+  console.log(2 * element);
+});
+
+.filter():
+
+Lager en ny array med alle elementer som oppfyller kravet du har satt.
+
+const liste = [56, 26, 43, 72, 61, 3, 19];
+
+// Ny array med alle elementer mindre enn 45
+const filtrertArray = liste.filter((element) => {
+  return element < 45;
+});
+
+.map():
+
+For hvert element i arrayen skal noe gjøres og legges til i en ny array. Endrer ikke den originale arrayen.
+
+const liste = [56, 43, 72, 61];
+
+const nyListe = liste.map((element) => {
+  2 * element;
+});
+// Ganger hvert element med 2
+
+Objekt:
+
+Objekt er en liste med nøkkel og verdi omringet av krøllparantes { }. Dette er ikke JSON.
+
+const objekt = {
+  nøkkel: verdi,
+  nøkkel1: verdi1,
+};
+
+const person = {
+  navn: 'Eline',
+  alder: 26,
+  bosted: 'Barcelona',
+  student: true,
+};
+
+console.log(person);
+console.log(person.alder);
+
+Det er mulig å putte arrays inn i objekter. Dette kalles et "nested object".
+
+const objekt = {
+  navn: 'Eline',
+  alder: 26,
+  bosted: [
+    {
+      id: 1,
+      adresse: 'Liksomgata 23',
+      postnummer: '1234',
+      sted: 'Norge',
+    },
+    {
+      id: 2,
+      adresse: 'C/ Señores Curas 68',
+      postnummer: '12120',
+      sted: 'Castellón',
+    },
+  ],
+};
+
+console.log(objekt); // Hele objektet
+console.log(objekt.bosted); // Bosted-listen
+console.log(objekt.bosted[1].adresse); // Adressen på index 1 som blir bosted nummer 2
+
+Alle typer Løkker:
+
+For:
+Løkke med instruksjoner - hvor løkken starter, når løkken skal stoppe, oppdatering for hver runde.
+
+Ved løkke inni løkke, nested loop, vil den indre kjøre alle runder for hver runde på den ytre.
+
+for (let i = 0; i <= 6; i++) {
+  console.log(i);
+}
+
+// Nested loop, løkke inni løkke
+for (let ytre = 0; ytre < 5; ytre++) {
+  for (let indre = 0; indre < 6; indre++) {
+    console.log(`${ytre}, så ${indre}`);
+  }
+}
+
+While:
+Så lenge det er true, gjør dette. Eksempelet er false når i er større enn 6, og løkken stopper.
+
+let i = 0;
+
+while (i < 6) {
+  console.log(i);
+  ++i;
+}
+
+Gå gjennom array med for-løkke:
+
+Man kan bruke for-løkke til å gå gjennom en array. Her brukes jeg .length() som gir antall elementer i arrayen. Så lenge i er mindre enn lengden (antall elementer), så...
+
+const handleliste = ['bananer', 'yoghurt', 'nugatti'];
+
+for (let i = 0; i < handleliste.length; i++) {
+  console.log(handleliste[i]);
+}
+
+
+</script>
+</body>
+</html>

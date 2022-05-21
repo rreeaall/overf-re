@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til sammensatte komponenter - Kjenne til ulike måter å kombinere komponenter
+
+Starter med en repetisjon fra komponent del 2.
+
+Ulike måter å kombinere komponenter:
+
+Under ser du noen ulike måter å bruke komponenter på
+
+// components/Child.js
+
+export default function Child () {
+  return <p>Child</p>;
+};
+
+// components/Sibling.js
+
+export default function Sibling() {
+  return <p>Sibling</p>;
+}
+
+// components/Parent.js
+
+// En komponten som bruker andre komponenter er en "Parent" eller "Wrapper"
+// Her bruker Parent, Child og Sibling komponenten
+// En komponent som blir brukt av en annen komponent er en "Child"
+// Vi sier at to komponenter som er på "samme nivå" er siblings
+export default function Parent() {
+  return (
+    <>
+      <Child />
+      <Sibling />
+    </>
+  );
+};
+
+Sammensatte komponenter:
+
+Som nevnt over kombinerer vi komponenter for å lage en nettside. Vi kan i tillegg bruke en komponent inne i en annen komponent.
+
+På bildet nedenfor viser jeg hvordan to komponenter kan jobbe sammen.
+
+Vi har en Cards komponent som bruker Card komponenten. På den måten skiller vi komponenten som har ansvar for å skrive ut alle produktene og komponenten som har ansvar selve produktet. Det er hensiktsmessig da vi mest trolig skal bruke Card andre steder hvor vi trenger å skrive ut produkter.
+
+I kode kunne det sett slik ut (seinere får dere se et mer ferdig eksempel, men må introdusere noen flere konsepter først).
+
+// components/Cards.js
+
+// Importerer Card komponenten for å kunne bruke denne
+import Card from './Card'
+
+// En fiktiv liste med produkter
+const products = [
+  { id: 1, name: "Navn 1" },
+  { id: 2, name: "Navn 2" }
+];
+
+export default function Cards() {
+  return (
+    // JSX som skriver ut en <ul>
+    // Går igjennom listen med produkter ved å bruke array.map()
+    // "Sender" hvert produkt objekt inn til Card komponenten
+    <ul>
+      {products?.map((product) => (
+        // Her "sender" vi informasjon om et produkt til Card komponenten
+        // key brukes kun av React for å kjenne igjen elementet (relevant for ytelse)
+        // Når vi bruker en annen komponent så MÅ den ha stor forbokstav det er slik React vet at dette er en komponent og ikke vanlig HTML
+        <Card product={product} key={product.id} />
+      ))}
+    </ul>
+  );
+};
+
+// components/Card.js
+
+// Her "henter" vi inn produktet som vi fikk fra Cards
+export default function Card({ product }) {
+  // Her har vi en funksjon som kunne lagt produktet i handlekurven
+  const addToCart = () => {
+    console.log("Added to cart");
+  };
+
+  return (
+    // her har vi en li som skriver ut informasjon om produktet
+    <li className="product">
+      {/* her ref vi til en "key=name" på produktet (som er et objekt) */}
+      <h3 className="task-name">{product.name}</h3>
+      {/* her har vi en knapp som trigger addToCart når vi klikker på den */}
+      <button onClick={() => addToCart(product.id)}>Legg i handlekurv</button>
+    </li>
+  );
+};
+
+I eksemplet over ser vi hvordan komponenter kombineres til å lage sammensatte komponenter (en komponent bruker en annen i sin render) til å bygge mer komplekse grensesnitt.
+
+Ferdig komponent med litt styling og et event:
+
+Under ser du et eksempel som:
+- Bruker inline styling
+- Bruker en variabel for ordet Test
+- Bruker et onClick-event som trigger en funksjon handleClick
+
+const divStyle = {
+  color: "blue",
+  maxWidth: "300px",
+  border: "1px solid red"
+};
+
+const variabel = "Test"
+
+// komponent med navnet HelloWorldComponent
+export default function HelloWorldComponent() {
+  // metode som trigges når vi klikker på knappen
+  const handleClick = () => {
+    console.log("click");
+  };
+
+  return (
+    <section>
+      {/* Bruker style-tag for å gi inline css */}
+      <div style={divStyle}>Hello World!</div>
+      {/* Bruker dynamisk variabel (Test) */}
+      <p>{variabel}</p>
+      {/* bruker onClick på en knapp event */}
+      <button
+        type="button"
+        onClick={handleClick}
+      >
+        Like me
+      </button>
+    </section>
+  );
+};
+
+</script>
+</body>
+</html>

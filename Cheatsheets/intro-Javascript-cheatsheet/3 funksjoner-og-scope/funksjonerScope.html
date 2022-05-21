@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+// Mål: - Forstå arrow functions - Skjønne hvorfor det er viktig hvor man plasserer variabler
+
+Funksjoner:
+
+Funksjoner er en kodeblokk som utfører en oppgave og kan returnere en verdi. For at en funksjon skal kjøre, må du kalle på den et sted i koden.
+
+function hello() {
+  console.log('Hello');
+}
+
+hello();
+
+Parametere:
+
+Man må ofte sende inn informasjon til funksjonen. Det gjøres med parametere.
+
+function function(parameter, parameter2) {
+    // Bruke parametere her
+};
+
+function addition(number1, number2) {
+    return number1 + number2;
+}
+
+addition(45, 32); // 77
+
+Arrow function:
+
+Med moderne JavaScript har det kommet en ny måte å skrive funksjoner på.
+
+Med samme eksempel som over:
+
+const addition = (number1, number2) => number1 + number2;
+
+addition(45, 32);
+
+Hvis det kun er ett parameter som skal inn, trenger man ikke parantesene.
+
+const addition = number => number + 2;
+
+// Gamle måten
+function addition(number) {
+  return number + 2;
+}
+
+Hvis det er mer enn en linje kode i funksjonen, bruker man krøllparantes rundt:
+
+const aFunction = () => {
+    line of code;
+    other line of code;
+}
+
+Både den eldre og den nye versjonen av function fungerer, men anbefaler at du holder deg til én - helst arrow.
+
+
+Scope:
+
+Scope refererer til hvor verdier og funksjoner kan nås.
+
+Global scope:
+
+Funksjonen eller verdien kan brukes hvor som helst.
+
+const isStudent = true;
+
+const studentCheck = () => {
+  // isStudent kan brukes her
+};
+
+// isStudent kan brukes her
+
+Block scope:
+
+Kan kun brukes innenfor funksjonen den er satt i.
+
+const studentCheck = () => {
+  const isStudent = true;
+
+  // isStudent kan brukes her
+};
+
+// isStudent kan ikke brukes her
+
+</script>
+</body>
+</html>

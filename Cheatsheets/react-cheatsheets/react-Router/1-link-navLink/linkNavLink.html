@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til Link og NavLink - Kjenne til hvordan navigere til en komponent
+
+React router - Link:
+
+Nå som React Router er tilgjengelig kan vi lage lenker slik at vi kan navigere rundt. Navigasjonen fungerer ved at vi:
+- Spesifiserer hvilken url vi skal bruke
+- Spesifiserer hvilken komponent som skal trigges
+
+Starter med å lage en Navigation.js komponent for å samle hovednavigasjonen. Lager en komponent på vanlig måte ved bruk av export default function ComponentName.
+
+export default function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li>
+          Hjem
+        </li>
+        <li>
+          Om
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+Til å lenke rundt brukes Link fra React Router. Den gjør at nettleseren oppdaterer nettadressen med riktig url. Ved trykk på en av linkene ser du at nettadressen blir henholdsvis / og /om. Hvis du jobber lokalt vil du se http://localhost:3000 og http://localhost:3000/om.
+
+// Navigation.js
+
+import { Link } from "react-router-dom";
+
+export default function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Hjem</Link>
+        </li>
+        <li>
+          <Link to="/about">Om</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+React router - NavLink:
+
+I tillegg til Link finnes det NavLink. Forskjellen er at NavLink vet hvilken url vi er på. Det gjør at vi kan gi den aktive linken et unikt design. Koden nedenfor gjør at den aktive linken får en 2px border.
+
+import { NavLink } from "react-router-dom";
+
+export default function Navigation() {
+  // Kun for demo for å gi styling
+  const linkStyle = ({ isActive }) => ({
+    border: isActive ? "2px solid #a9a9a9" : "none"
+  });
+
+  return (
+    <nav>
+      <ul>
+        {/* Her oppdateres klassen basert på om linken er aktiv eller ikke */}
+        {/* Kan enten gi en styl eller klasse (viser begge deler her) */}
+        <li>
+          <NavLink
+            to="/"
+            style={linkStyle}
+            className={({ isActive }) => (isActive ? "activated" : "")}
+          >
+            Hjem
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/om" style={linkStyle}>
+            Om
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+Knytte navigeringen og komponent:
+
+Nå som navigasjonen virker og nettadressen oppdaterer seg kan vi knytte navigasjonen til rett komponent. Vi bestemmer hvilken komponent som skal vises på hjem (/) og /om.
+
+I koden under sier jeg at / (startsiden) skal bruke en komponent som heter Home, mens /om (path="om") bruker komponenten About. Det vil si at innholdet vi har i de komponentene blir brukt når vi navigerer til de sidene.
+
+// App.js
+
+import "./styles.css";
+import { Route, Routes } from "react-router-dom";
+
+// Importerer komponentene for å kunne bruke dem
+import About from "./components/About";
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="om" element={<About />} />
+      </Routes>
+    </>
+  );
+}
+
+Koblingen oppstår mellom det som står i to="/om" i Navigation komponenten og det som står i path="om" over.
+
+<Link to="/om">Om</Link>
+<Route path="om" element={<About />} />
+
+Det gjør det mulig å navigere til samt se unikt innhold på de ulike nettadressene.
+</script>
+</body>
+</html>

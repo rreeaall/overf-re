@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hvordan løfte state
+
+Når vi jobber med state må vi være bevisst hvor vi lagrer staten. Grunnen til dette er at hver gang vi oppdatere staten blir komponenten laget på nytt. Det kan få uønsket konsekvenser om vi lagrer staten på feil sted.
+
+I bildet nedenfor kan vi velge å lagre staten i alle de ulike komponentene. Det vi må tenke på er at om vi lagrer state i parent vil state-endringer i denne påvirke alle barna, mens endringer i barna ikke påvirker oppover til f.eks parent.
+
+En fordel med dette er at alle barna kan lagre state hos parent og via props motta / oppdatere sin state. Det gjør at vi kan flytte state ut av et barn og opp et nivå.
+
+Under ser du et eksempel på hvordan vi får uønsket effekt om staten lagres feil sted. Her får vi utfordringer hvis vi ønsker at det vi har skrevet i Input skal overleve det å trykke på vis / skjul skjema.
+
+Når vi i Parent går fra å vise til å skjule skjema medfører det at skjema-komponenten Form blir laget på nytt. Når den blir laget på nytt blir det vi har skrevet nullet ut, satt tilbake til startverdien.
+
+I slike tilfeller må barnet sin state bo hos parent som ikke blir laget på nytt, bare oppdatert.
+
+// components/Parent.js
+export default function Parent() {
+  // Sier at skjema er skjult
+  const [showForm, setShowForm] = useState(false);
+
+  // Funksjon som kan brukes til å oppdatere visningen av skjema
+  const handleShowForm = () => {
+    // Setter showForm til det motsatte av verdien den hadde
+    // Hvis false blir den nye verdien !false som er true
+    setShowForm(!showForm);
+  };
+
+  return (
+    <>
+      <h1>Legg til navn på studenter</h1>
+      {/* viser kun skjema hvis showForm er true */}
+      {showForm ? <Form /> : null}
+      <button onClick={handleShowForm}>
+        {showForm ? "Skjul skjema" : "Vis skjema"}
+      </button>
+    </>
+  );
+}
+
+// components/Form.js
+export default function Form() {
+  const [name, setName] = useState("");
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  return <input value={name} onChange={handleNameChange} />;
+}
+
+Verdien blir satt tilbake til en tom streng "" når jeg skjuler og viser skjema igjen, grunnet at Form blir laget på nytt. Vi mister med andre ord informasjonen vi har skrevet.
+
+Lift state:
+
+For at det vi har skrevet skal overleve vis / skjul skjema må Parent ha kontroll på staten. Vi må løfte staten fra Form til Parent.
+
+// components/Form.js
+
+// Deconstructer name og handleNameChange fra props
+export default function Form({ name, handleNameChange }) {
+  return <input value={name} onChange={handleNameChange} />;
+}
+
+// Uten deconstruction
+export default function Form(props) {
+  return <input value={props.name} onChange={props.handleNameChange} />;
+}
+
+// components/Parent.js
+export default function Parent() {
+  const [showForm, setShowForm] = useState(false);
+  // Lagring av navn bor nå hos parent
+  const [name, setName] = useState("");
+
+  // Metoden for å oppdatere navnet bor nå i Parent
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleShowForm = () => {
+    setShowForm(!showForm);
+  };
+
+  return (
+    <>
+      <h1>Legg til info om studenten</h1>
+      {/* Sender name og handleNameChange som props */}
+      {/* Det gjør at vi fortsatt kan lagre navnet */}
+      {/* Lagringen overlever vis / skjul skjema */}
+      {showForm ? (
+        <Form name={name} handleNameChange={handleNameChange} />
+      ) : null}
+      <button onClick={handleShowForm}>
+        {showForm ? "Skjul skjema" : "Vis skjema"}
+      </button>
+    </>
+  );
+}
+
+Hvis jeg trykker på knappen og skjuler deretter viser skjema igjen får jeg dette resultatet. Vi ser at teksten har overlevd endringen.
+
+Lift state for å "dele" state mellom komponenter som er søsken:
+
+Andre grunner til å løfte staten er at vi ønsker at komponenter som er søsken skal dele staten. Det vil si at de begge skal vite hva den siste nye verdien er.
+
+Vi kan se for oss at vi står i et veikryss hvor hvert kryss har sin egen håndtering lysregulering. Det er klart at det vil føre til krasj. For at lysreguleringen skal fungere må alle kryssene vite hvem som har rødt, gult og grønt lys.
+
+I dette eksempelet ønsker vi å lagre en liste med bøker. Vi ønsker samtidig at en frittstående komponent Header skal vise hvor mange bøker det er i listen.
+
+Gjør vi det på denne måten så bor staten i Books slik at Header ikke får ønsket informasjon.
+
+// components/Parent.js
+
+import Books from "./Books";
+import Header from "./Header";
+
+export default function Parent() {
+  return (
+    <section>
+      <Header />
+      <Books />
+    </section>
+  );
+};
+
+// components/Header.js
+
+export default function Header({ booksCount }) {
+  return <h2>Antall bøker er: {booksCount}</h2>;
+};
+
+// components/Books.js
+
+import { useState } from "react";
+
+// Books kjenner til listen med bøker som gjør at denne listen 
+// er isolert fra alle andre komponenter
+// Header kan med andre ord ikke vite hvor mange bøker vi har lagret
+export default function Books() {
+  const [title, setTitle] = useState("");
+  const [books, setBooks] = useState([]);
+  const addBook = () => {
+    const updatedBookList = [...books, title];
+    setBooks(updatedBookList);
+  };
+
+  return (
+    <div>
+      <input
+        value={title}
+        onChange={(event) => setTitle(event.currentTarget.value)}
+      />
+      <button onClick={addBook}>Lagre</button>
+    </div>
+  );
+};
+
+Løfter state fra Books til parent:
+
+I koden nedenfor flyttes håndtering av Books state til Parent samt funksjonen vi bruker for å legge en bok til listen med bøker (oppdatere staten).
+
+For at vi skal kunne trigge addBook metoden i Books komponenten må vi sende den som en prop addBook={addBook}
+
+I korte trekk kopieres det som trengs for å oppdatere staten og sender funksjonen som brukes tilbake til det stedet hvor vi hadde staten før vi løftet den.
+
+// components/Parent.js
+
+import { useState } from "react";
+import Books from "./Books";
+import Header from "./Header";
+
+export default function Parent() {
+  // flyttet håndtering av state fra Books til Parent
+  const [books, setBooks] = useState([]);
+
+  // flyttet addBook fra Books til Parent
+  const addBook = (title) => {
+    const updatedBookList = [...books, title];
+    setBooks(updatedBookList);
+  };
+
+  return (
+    <section>
+      {/* Kan nå sende lengden på listen med bøker slik at Header vet hvor mange bøker det er */}
+      <Header booksCount={books.length} />
+      {/* Sender addBook som prop til books for å trigge i Books komponenten */}
+      <Books addBook={addBook} />
+    </section>
+  );
+};
+
+// components/Header.js
+
+export default function Header({ booksCount }) {
+  return <h2>Antall bøker er: {booksCount}</h2>;
+};
+
+// components/Books.js
+
+import { useState } from "react";
+
+// Deconstructer addBook fra prop.addBook
+export default function Books({ addBook }) {
+  const [title, setTitle] = useState("");
+
+  // trigges når vi trykker på knappen
+  const handleBookUpdate = () => {
+    // trigger addBook som kommer fra parent
+    addBook(title);
+  };
+
+  return (
+    <div>
+      <input
+        value={title}
+        onChange={(event) => setTitle(event.currentTarget.value)}
+      />
+      <button onClick={handleBookUpdate}>Lagre</button>
+    </div>
+  );
+};
+
+Kodeeksempel (books): https://s2bx0.csb.app/
+Hvid linken ikke funker, her er codesandbox link: https://codesandbox.io/s/lifte-state-2-s2bx0?from-embed
+</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hooks - Kjenne til state - Kjenne til hvordan bruke useState - Kjenne til hvordan bruke previous state
+
+Hva er hooks?
+
+Kort fortalt gjør hooks det mulig å skrive funksjonelle komponenter (slik vi lager komponenter) i React. Før laget man komponenter ved hjelp av klasser, noe som ikke er vanlig lengre.
+
+Vi bruker hooks blant annet til å få kontroll på state (tilstander) i komponenten og globalt. Vi bruker også hooks til å kontrollere "livssyklusen" (livet) til en komponent. Hooks gjør, i følge de som skrev "gammel" React, det er enklere å lære seg React og bruke React.
+Hva må vi tenke på når vi bruker hooks?
+
+Noen generelle regler for Hooks er:
+- Må (skal) kalles i toppen av en funksjon (komponent) og ikke inne i en løkke, conditional eller andre funksjoner
+- Brukes bare i React komponenter og ikke i vanlig JavaScript funksjoner
+- Kan lage egne Hooks som bruker andre Hooks
+
+Hvilke hooks har vi?
+
+Det finnes en rekke hooks vi kan bruke. I dette kurset skal vi se på de fleste, men har hovedfokus på useState og useEffect.
+
+Under ser du en liste over de vanligste:
+- useState - hook for håndtere state
+- useEffect - hook for livssyklusen til en komponent i React (useEffect)
+- Hook for å jobbe med Redux og Context API (global state) (useContext ++)
+- Hook for å cache funksjoner (useCallback)
+- Hook for performance (useMemo)
+
+I en gjesteforelesning skal vi gå igjennom de vanligste hookene samt lage egne. I denne runden skal vi kun se på useState som vi bruker til å håndtere state.
+
+Hva er state?
+
+Jeg har nevnt state et par ganger, men hva menes med state? Du kan sammenlikne state med å endre verdien på et termometer som endrer seg basert på været. Eller vann som endrer tilstand basert på temperaturen (gass, flytende eller fast).
+
+I en komponent skjer endring i state primært når vi oppdaterer user-input (skriver i et inputfelt) eller noen trigger et event (trykker på en knapp). State brukes til å ta vare på de endringen, enten i komponenten eller globalt hvis nødvendig.
+
+Når staten endrer så fører det til en re-render av DOM, basert på hvilken komponent som ble oppdatert. Staten (tilstanden komponenten er i) viser da den nyeste tilstanden.
+
+Både state og props holder på informasjon som påvirkere hva som rendres til DOMen.
+
+Hovedforskjellen mellom props og state er at props sendes fra en komponent til en annen, mens state er noe som håndteres inne i komponenten. Eks:
+component
+const [myState, setMyState] = useState('startvalue')
+
+<input value={myStateValue} onChange={setMyState} />
+
+Hvordan bruke useState?
+
+For å få muligheten til å håndtere staten bruker vi useState hook.
+
+// importerer useState fra React for å kunne bruke funksjonaliteten
+import { useState } from "react";
+
+export default function Component() {
+  // Henter ut to verdier fra useState
+  // Første verdi [value,_] er selve tilstanden
+  // Andre verdi [_,setValue] brukes til å endre tilstanden
+  // setValue brukes til å sette / oppdatere state (oppdatere value)
+  // 'Initial Value' er verdien du starter med når komponenten brukes
+  const [value, setValue] = useState('Initial Value')
+
+  return (...)
+}
+
+Når vi har mer kompleks 'initial state' kan det se slik ut. Vi lager da et objekt til å holde på verdiene vi skal oppdatere.
+
+import { useState } from "react";
+
+const initialState = {
+  age: 45,
+  name: 'Zara',
+  exams: 0
+}
+
+export default function Student() {
+  const [state, setState] = useSate(initialState)
+  /*
+    setValue => brukes til å sette / oppdatere state (oppdatere value)
+    'Initial Value' er verdien du starter med når komponenten brukes
+  */
+  return (...)
+}
+
+useState i en komponent:
+
+I dette eksempelet brukes useState i en komponent. Hooks skal alltid være i toppen av komponenten og aldri inne i return ().
+
+Det som vil skje i denne koden er at vi "lagrer" verdien som skrives i inputfeltet hver gang teksten oppdaters. Det gjør at {name} verdien viser siste nye verdi (tilstand / state). Første gang er verdien default, men kunne også vært en tom streng "".
+
+// components/DefaultState.js
+import { useState } from "react";
+
+export default function DefaultState() {
+  // klargjør useState hook. Setter startverdien til å være "default"
+  const [name, setName] = useState("default");
+
+  function handleChange(e) {
+    // oppdaterer verdien 'name' med det vi har skrevet i inputfeltet
+    setName(e.target.value);
+  }
+
+  return (
+    <>
+      {/* Bruker onChange event til å trigge handleChange hver gang verdien oppdateres */}
+      <input autoFocus onChange={handleChange} value={name} />
+      {/* Første gang komponenten vises vil teksten være Name: default */}
+      <h1>Name: {name}</h1>
+    </>
+  );
+}
+
+Feil måter å bruke hooks på:
+
+Dette er FEIL:
+
+// components/DefaultState.js
+
+export default function DefaultState() {
+  function handleChange(e) {
+    // Hooks skal ikke brukes her
+    const [name, setName] = useState("default");
+    setName(e.target.value);
+  }
+
+  return (
+    <>
+      <input autoFocus onChange={handleChange} value={name} />
+      <h1>My name is: {name}</h1>
+    </>
+  );
+}
+
+Og dette er FEIL
+
+// components/DefaultState.js
+
+export default function DefaultState() {
+  function handleChange(e) {
+    setName(e.target.value);
+  }
+
+  return (
+    <>
+      {/* Hooks skal ikke brukes her */}
+      const [name, setName] = useState("default");
+      <input autoFocus onChange={handleChange} value={name} />
+      <h1>My name is: {name}</h1>
+    </>
+  );
+}
+
+Hva skjer når vi prøver å oppdatere samme state flere ganger etter hverandre?
+
+For at React skal ha god ytelse "ser" den kun den siste endringen som gjøres.
+
+// components/BatchedState
+import { useState } from "react";
+
+export default function BatchedState() {
+  const [count, setCount] = React.useState(0);
+
+  function handleClick() {
+    // Updates er batched grunnet performance
+    // React "ser" kun siste stateoppdatering
+    setCount(count + 1);
+    setCount(count + 5);
+    // Hvis vi hadde lagt til setCount(3) ville de over ikke hatt effekt.
+    // State blir da 3.
+  }
+
+  return <button onClick={handleClick}>{count} times</button>;
+};
+
+Hvordan trigge endring i state direkte uten å lage en funksjon?
+
+Ofte kan det være hensiktsmessige å trigge endringen i state direkte uten å måtte lage en funksjon slik dere har sett frem til nå.
+
+// components/UpdateState.js
+import { useState } from "react";
+
+export default function UpdateState() {
+  const [book, setBook] = React.useState(null);
+
+  /*
+    const handleBookChange = (event) => {
+      // Bruker ikke denne
+    }
+  */
+
+  return (
+    <div>
+      <p>{book}</p>
+      {/* trigger setBook direkte isteden for å lage en handleBookChange metode */}
+      <input
+        onChange={(event) =>
+          setBook(event.currentTarget.value)
+        }
+        value={book?.name}
+      />
+    </div>
+  );
+};
+
+export default UpdateState
+
+Hvordan få tilgang til samt oppdatere "gammel" state?
+
+Når vi jobber med objekter eller lister ønsker vi ofte å beholde verdiene som allerede er lagret, men kanskje endre en av verdiene. Det er flere måter å gjøre dette på i React, men måten som foretrekkes er denne:
+
+// components/UpdateListState.js
+import { useState } from "react";
+
+export default function UpdateListState() {
+  const [books, setBooks] = React.useState([{ id: 1, name: "Oliver Twist" }]);
+  const [book, setBook] = React.useState(null);
+
+  function addValue() {
+    // prevState i dette tilfellet gir oss tilgang til 
+    // staten slik den var før vi oppdaterte den
+    // det som skjer under er at vi bruker gammel state og legger til en bok
+    setBooks((prevState) => [...prevState, book]);
+  }
+
+  return (
+    <div>
+      {/* brukes til å debugge hvordan listen med books ser ut */}
+      <p>{JSON.stringify(books)}</p>
+      {/* trigger setBook direkte isteden for via en handleBookChange metode */}
+      <input
+        onChange={(event) =>
+          setBook({
+            id: Math.floor(Math.random() * 100),
+            name: event.currentTarget.value
+          })
+        }
+        value={book?.name}
+      />
+      {/* trigger addValue metoden når vi trykker på knappen */}
+      <button onClick={addValue}>Add</button>
+    </div>
+  );
+};
+
+</script>
+</body>
+</html>

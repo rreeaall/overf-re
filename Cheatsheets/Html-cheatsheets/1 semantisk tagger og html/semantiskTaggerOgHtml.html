@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Mål:
+- Overordnet kjenne til de vanligste semantiske taggene
+- Kjenne til hvordan bruke semantiske tagger til å sette opp en enkel nettside -->
+
+Innholdsfortegnelse:
+1. Hva er semantiske tagger
+2. Hva er de vanligste semantiske taggene
+3. Eksempel på feil semantikk
+4. Eksempel på god semantikk
+5. Bruk av semantiske tagger
+6. Eksempel komplett semantisk oppsett
+
+Hva er semantiske tagger:
+
+Semantiske tagger brukes til å gi mer mening til innholdet på websiden. Dette gjelder for bots, screen readers og for utviklere. Har effekt også på SEO (ranker bedre på søk i søkemotoren).
+- Gjør innholdet lettere å lese / forstå for andre
+- Bedre tilgjengelighet for alle brukere, spesielt om brukeren har unike behov
+- Gjør kodingen mer konsistent
+
+Hva er de vanligste semantiske taggene:
+
+De finnes en rekke semantiske tagger hvor noen av de vanligste er:
+
+<article> 
+<aside>
+<details> 
+<figcaption> 
+<figure> 
+<footer> 
+<header> 
+<main> 
+<mark> 
+<nav> 
+<section> 
+<summary> 
+<time>
+
+Eksempel feil semantikk:
+
+I eksempelet under brukes div som tagg og id og klassene brukes til å beskrive hva HTML-taggen brukes til. Dette er dårlig praksis og gir liten mening både for den som leser koden og den som besøker nettsiden.
+    
+Det blir også vanskeligere å vedlikeholde koden når man f.eks kaller en klasse for "section" da man har "brukt opp" en semantisk tagg til å beskrive funksjonen til divén.
+    
+    <div id="header"></div>
+    <div class="section">
+      <div class="article">
+        <div class="figure">
+          <img />
+          <p class="figcaption"></p>
+        </div>
+      </div>
+    </div>
+    <div id="footer"></div>
+    
+Eksempel god semantikk:
+
+Den sammen koden over kan med fordel bruke semantiske tagger. Ider og klasse navn kan fortsatt brukes, men brukes da for å forklare hvilke form/design en gitt seksjon har isteden for hva slags HTML-tagg det er.
+
+<header></header>
+<section>
+  <article>
+    <figure>
+      <img />
+      <figcaption></figcaption>
+    </figure>
+  </article>
+</section>
+<footer></footer>
+
+Bruk av semantiske tagger:
+
+Under er en rekke eksempler på bruk av HTML-taggene. Du ser kun et utsnitt av HTML-en.
+
+Header:
+- Header brukes ofte i toppen av HTMLen og gjerne til å "wrappe" navigasjonen
+- Brukes også inne i artikler, seksjoner for å "wrappe" overskrifter
+
+<header>
+<h1>Company A</h1>
+<nav>
+<ul>
+  <li><a href="/home">Home</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/contact">Contact us</a></li>
+</ul>
+</nav>
+<form action="/where-to-post" method="POST">
+<input name="q" type="search" />
+<input type="submit" />
+</form>
+</header>
+<article>
+<header>
+<h2>Some header content</h2>
+</header>
+</article>
+
+Nav:
+- Brukes til å gruppere tagger brukt for navigasjon
+
+<nav>
+  <ul>
+    <li><a href="/home">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact us</a></li>
+  </ul>
+</nav>
+
+Main:
+- Brukes til å "wrappe" hovedinnholdet på siden
+- Brukes ikke til å "wrappe" innhold som gjenbrukes på flere sider. F.eks navigasjon, footer eller søk som brukes på alle sidene
+- Bruker kun en main-tag per side
+- Skal ikke nestes (være barn av) section, article, footer, nav, header etc
+
+Eksempel på rett bruk:
+<main>
+    <!-- ... mer innhold her -->
+    <h1>Sidetittel</h1>
+    <p>Paragraf</p>
+    <article>
+      <h2>Artikkel tittel</h2>
+      <p>Artikkel paragraf</p>
+    </article>
+    <!-- ... mer innhold her -->
+  </main>
+  
+Eksempel på feil bruk:
+- Wrapper navigasjonen som gjenbrukes på flere sider
+
+<!-- Side1.html -->
+<body>
+    <main>
+      <nav>
+        <!-- Navigasjon på Side 1-->
+      </nav>
+    </main>
+  </body>
+  
+  <!-- Side2.html -->
+  <body>
+    <main>
+      <nav>
+        <!-- Navigasjon på Side 2 -->
+      </nav>
+    </main>
+  </body
+  
+- Flere tagger per side
+
+<body>
+    <main>
+      <h1>Tittel</h1>
+      <p>Paragraf</p>
+    </main>
+  
+    <main>
+      <h1>En annen tittel på samme side</h1>
+    </main>
+  </body>
+  
+- Er barn av en section
+
+<section>
+    <main>
+    </main>
+</section>
+
+
+Aside:
+- Brukes for å beskrive innhold som ikke er en del av "hovedflyten" på nettsiden. F.eks en liste med filter på en nettbutikk, metadata om en artikkel som står til høyre for selve artikkelen
+
+<aside>
+    <p>
+      This is a sidebar, for example a terminology definition or a short
+      background to a historical figure.
+    </p>
+  </aside>
+  
+Section og Article:
+- Bruk av seksjoner og artikler kan forvirre og er rikelig diskutert. Hovedregelen jeg har lært meg er at
+- Seksjoner grupperer andre elementer (må ha noen barn)
+- Artikkel kan stå alene (trenger ikke ha seksjoner inne i seg)
+
+<section>
+<p>Top Stories</p>
+<section>
+<p>News</p>
+<article>Story 1</article>
+<article>Story 2</article>
+<article>Story 3</article>
+</section>
+<section>
+<p>Sport</p>
+<article>Story 1</article>
+<article>Story 2</article>
+<article>Story 3</article>
+</section>
+</section>
+
+Footer:
+- Footer brukes som regel på bunnen av en nettside. Inneholder ofte firmanavn, link til personvern, info om firma m.m
+
+<footer>Company A</footer>
+
+Figure:
+- Figure brukes til å gruppere et bilde og beskrivelsen (figcaption) av bildet
+
+<figure>
+  <img
+    src=""
+    alt="Shadow of Mordor"
+  />
+  <figcaption>Cover art for Middle-earth: Shadow of Mordor</figcaption>
+</figure>
+
+Img:
+- Brukes for å vise et bilde
+- Har de siste årene fått en rekke nye attributter for å optimaliser bruk av rett bilde til rett skjermstørrelse. Dette for å bedre ytelsen (lastetiden) på nettsiden.
+- srcset - hvilke bilder nettleseren kan velge mellom og størrelsen på disse bildene
+- sizes - hvilken skjermbredde bildet skal brukes på og størrelsen på "boksen" som er rundt bildet (f.eks en section tag eller figure tag) => Altså hvor stor plass skal bildet få.
+
+Hvordan nettleseren håndterer prosessen:
+1. Henter inn bredden på enheten som skal vise bildet
+2. Går igjennom listen med 'sizes' for å se hvilken størrelse som er gjelder og media query
+3. Ser hvilket bilde som passer til denne media query (480 px for skjermstørrelsen under 600px). Dette henger sammen med hvor stor plass bildet kan ta
+4. Laster inn bildet som passer størrelsen basert på bredden etter filnavnet (eks 480w). Hvis ingen bilder passer velges det første bildet som er større enn plassen som er tilgjengelig
+
+Kan lese mer på: https://html.com/attributes/img-srcset/
+<img
+  srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w"
+  sizes="(max-width: 600px) 480px,
+            800px"
+  src="elva-fairy-800w.jpg"
+  alt="Elva dressed as a fairy"
+/>
+
+Eksempel komplett semantisk oppsett:
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <!-- Meta tags-->
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -3em;
+        background: #fff;
+      }
+
+      .skip-link:focus {
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to main content</a>
+    <header>
+      <h1>LOGO</h1>
+      <nav>
+        <ul>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/contact">Contact us</a></li>
+        </ul>
+        <form method="GET" action="/search">
+          <label for="search">
+            Search: <input id="search" name="q" type="search" />
+          </label>
+          <input type="submit" />
+        </form>
+      </nav>
+    </header>
+    <!-- The skip link jumps to here -->
+    <main id="content">
+      <section>
+        <h2>Top Stories</h2>
+        <section>
+          <h3>News</h3>
+          <article>
+            <h4>Story 1</h4>
+            <figure>
+              <img
+                src=""
+                alt="Shadow of Mordor"
+              />
+              <figcaption>
+                Cover art for Middle-earth: Shadow of Mordor
+              </figcaption>
+            </figure>
+            <p>
+              Lorem ipsum dolor sit, <mark>amet consectetur</mark> adipisicing
+              elit. Consequuntur commodi, fuga suscipit vero repellat minus
+              exercitationem sapiente accusantium nostrum odio amet delectus
+              harum nihil eum, dicta quibusdam voluptatum culpa quod.
+            </p>
+            <a href="/page2">Read more</a>
+            <footer>
+              <p>Published <time datetime="2020-18-08">August 18</time></p>
+              <!-- Bruke til å tilegne et menneskelig lesbart datoelement ISO-standard -->
+            </footer>
+          </article>
+          <article>Story 2</article>
+          <article>Story 3</article>
+        </section>
+        <section>
+          <h2>Sport</h2>
+          <article>
+            <details open>
+              <summary>My summary</summary>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta
+                facere aut autem odio, fugit mollitia, provident quidem minima
+                sapiente harum enim libero obcaecati dolores ullam ea
+                praesentium magnam, iste vel.
+              </p>
+            </details>
+          </article>
+          <article>Story 2</article>
+          <article>Story 3</article>
+        </section>
+      </section>
+      <aside>
+        <p>
+          This is a local sidebar
+        </p>
+      </aside>
+    </main>
+    <footer>Company A</footer>
+  </body>
+</html>
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Glossary/Semantics
+
+</body>
+</html>

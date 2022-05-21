@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// Mål: - Kjenne til ternary operators - Kjenne til logical operators - Kjenne til optional chaining
+
+Ternary operators:
+
+I f.eks React skriver vi ikke if / else når vi skal sjekke om gitte krav er oppfylt, vi bruker ternary operators.
+
+Ternary operators har formen:
+
+hvaViSkalSjekke ? hvisDetViSjekkerErTrue : hvisDetViSjekkerErFalse
+
+const age = 22;
+
+if (age > 22) {
+  console.log('above 22');
+} else {
+  console.log('less than 22');
+}
+
+// ternary operator
+age > 22 ? console.log('above 22') : console.log('less than 22');
+
+Logical Operators og Nullish:
+Under ser du de vanlige logiske sjekkene vi har hatt lenge. I ES2015 har vi enda flere som du ser lengre ned.
+
+x >= y // Større enn eller lik
+x > y // Større enn
+x <= y // Mindre enn eller lik
+x < y // Mindre enn
+x === y // Lik verdi og type
+x !== y // Forskjellig fra
+!x // Condition for x ikke oppfylt
+
+Logical Operators:
+
+condition && result // hvis condition er sann, skriv ut result
+condition || result // hvis condition ikke er sann, skriv ut result
+
+const age = 22;
+
+// Logical Operators
+age > 20 && console.log(age); // 22
+age > 22 || console.log("Less than 22"); // Less than 22
+
+Nullish coalescing:
+Brukes for å gi en alternativ verdi om det vi ønsker å sjekke om condition er null eller undefined.
+
+Condition vi ønsker å sjekke kan være en variable, funksjon m.m. Formen er:
+
+condition ?? "Alternativ verdi"
+
+const newAge = null;
+
+const handleAge = (age) => {
+  return newAge ?? "Shown if newAge is null or undefined";
+}
+
+console.log(handleAge()) // Shown if newAge is null or undefined
+
+Optional Chaining:
+Når vi jobber med objekter forekommer det ofte at verdien vi får tilbake kan være null eller undefined. Det vil si at koden feiler om vi prøver å bruke en verdi som ikke finnes.
+
+Kjennetegnes ved bruk av ?.
+
+const list = null;
+
+// Error => Cannot read property 'map' of null
+const failed = list.map(element => element)
+
+// Feiler ikke da .map ikke blir kjørt siden vi sjekker om verdien er null 
+// eller undefined
+const values = list?.map((element) => element);
+console.log(values); // undefined
+
+const user = {
+  address: null
+};
+
+// Før
+if(user && user.address && user.address.street) {
+  console.log(user.address.street) // undefined
+}
+
+// user: {"address":null}
+console.log('user:', JSON.stringify(user));
+
+// user.address: null 
+console.log('user.address:', JSON.stringify(user.address));
+
+// Virker ikke uten ?. => Error
+// user.address.street: undefined
+console.log('user.address.street:', JSON.stringify(user.address?.street));
+
+
+
+
+Kode fra codesandbox:
+const condition = 2 > 3;
+const conditionTwo = 3 < 2;
+
+// Vanlig if-else
+
+if (condition) {
+  /* Do magic */
+} else if (conditionTwo) {
+  /* Do magic two */
+} else {
+  /* Do magic three */
+}
+
+// Ternery operators
+
+const age = 22;
+
+if (age > 22) {
+  console.log("above 22");
+} else {
+  console.log("less than 22");
+}
+
+// Inline if-else
+age > 22 ? console.log("above 22") : console.log("less than 22");
+
+// Logical and Nullish
+age > 20 && console.log(age); // 22
+age > 22 || console.log("Less than 22"); // Less than 22
+
+const newAge = null;
+
+const handleAge = (age) => {
+  return newAge ?? "Shown if newAge is null or undefined";
+};
+
+console.log(handleAge()); // Shown if newAge is null or undefined
+
+// Opional Chaining
+const list = null;
+const values = list?.map((element) => element); // Error
+console.log(values);
+
+const user = {
+  address: null
+};
+
+// Før
+if (user && user.address && user.address.street) {
+  console.log(user.address.street); // undefined
+}
+
+console.log("user:", JSON.stringify(user)); // user: {"address":null}
+console.log("user.address:", JSON.stringify(user.address)); // user.address: null
+
+// Virker ikke uten ?. => Error
+console.log("user.address.street:", JSON.stringify(user.address?.street)); // user.address.street: undefined
+
+Dokumentasjon
+MDN Ternary Operators:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+
+MDN Nullish Coalescing:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator
+
+MDN Logical Operators (&&):
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND
+
+MDN Logical Operators (||):
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR
+
+MDN Logical Not (!):
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_NOT
+
+MDN Strict Inequal (!==):
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_inequality
+
+MDN Strict Equal (===):
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality
+</script>
+</body>
+</html>

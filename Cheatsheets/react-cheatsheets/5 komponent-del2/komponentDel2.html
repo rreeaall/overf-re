@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til ulike typer komponenter - Kjenne til sammensatte komponenter - Kjenne til ulike måter å kombinere komponenter - Kjenne til React Fragment
+
+Ulike typer komponenter:
+
+Når vi snakker om komponenter så snakker vi om ulike typer basert på hvor mye logikk (kode) som finnes i komponenten og hva komponenten har ansvar for.
+
+Rene komponenter:
+
+En ren komponent er en komponent som kun skriver ut HTML (JSX ⇒ JS ⇒ HTML). Dette identifiseres som 'stateless' eller 'dumme' komponenter.
+
+const SimpleComponent = () => <h1>Jeg er enkel komponent uten noe greier</h1>;
+
+Smarte komponenter:
+
+En 'smart' eller 'statefull' komponent bruker eksterne metoder, andre komponenter, props samt håndterer sin egen state. De har med andre ord mer logikk. Under ser du hvordan en slik komponent kan se ut. Mer om det seinere.
+
+export default function StateFull() {
+  const [state, setState] = useState("");
+
+  const handleClick = () => {
+    setState("clicked");
+  };
+  // Dynamiske verdier må ha { }
+  return <button onClick={handleClick}>Button {state}</button>;
+};
+
+Ulike måter å kombinere komponenter:
+
+Under ser du noen ulike måter å bruke komponenter på:
+
+// components/Child.js
+
+export default function Child() {
+  return <p>Child</p>;
+};
+
+// components/Sibling.js
+
+export default function Sibling() {
+  return (
+    <p>Sibling</p>
+  )
+}
+
+// components/Parent.js
+
+// En komponten som bruker andre komponenter er en "Parent" eller "Wrapper"
+  // Her bruker Parent, Child og Sibling komponenten
+
+// En komponent som blir brukt av en annen komponent er en "Child" av denne
+// Vi sier at komponenter på "samme nivå" er siblings
+export default function Parent() {
+  return (
+    <>
+      <Child />
+      <Sibling />
+    </>
+  );
+};
+
+export default Parent
+
+React Fragment:
+
+første eksempel under vil koden fungere, men ikke i det andre eksempelet. Grunnen til det er at React krever at det er noe som ligger rundt kode på samme nivå.
+
+// Denne vil fungere da vi bruker <></> som er såkalt React Fragments
+export default function ReactFragment() {
+  return (
+    <>
+      <h2>Enkel komponent med Fragment</h2>
+      <p>Paragraf</p>
+    </>
+  );
+};
+
+// Denne vil feile
+export default function ReactFragment() {
+  return (
+      <h2>Enkel komponent uten Fragment som failer</h2>
+      <p>Paragraf</p>
+  );
+};
+
+Sammensatte komponenter:
+
+Som nevnt over kombinerer vi komponenter for å lage en nettside. Vi kan i tillegg bruke en komponent inne i en annen komponent. På bildet nedenfor viser jeg hvordan to komponenter kan jobbe sammen (eksempel på kode for denne ser du i leksjon 10).
+
+Vi har en 'Cards' komponent som bruker 'Card' komponenten. På den måten skiller vi komponenten som har ansvar for å skrive ut alle produktene og komponenten som har ansvar selve produktet. Det er hensiktsmessig da vi mest trolig skal bruke Card andre steder hvor vi trenger å skrive ut produkter.
+</script>
+</body>
+</html>

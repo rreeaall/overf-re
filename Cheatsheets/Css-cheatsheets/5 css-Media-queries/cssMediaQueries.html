@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+/* Mål:
+- Overordnet kjenne til media queries
+- Kjenne til hvordan mobiltilpasse nettsiden */
+
+Vi kan bruke media queries til å endre layouten / stylingen basert på skjermstørrelsen til enheten vi bruker, som regel basert på bredden til enheten.
+
+Vi kan velge å tilnærme oss stylingen mobile first eller desktop first. Mobile first vil si at vi tilpasser innholdet til små enheter og endrer layouten når skjermbredden øker. Går fra mobil til desktop.
+
+Alternativt kan vi starte med maks bredde (desktop first) og endre layouten når skjermbredden reduseres. Går fra desktop til mobil.
+
+/* Mobile first - inntreffer når skjermbredden er under 640px */
+.container {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+/* Mobile first - inntreffer når skjermbredden er minimum 640px */
+@media screen and (min-width: 640px) {
+  .container {
+    border: 1px solid red;
+    max-width: 80%;
+  }
+}
+
+/* Mobile first - inntreffer når skjermbredden er minimum 1200px. 
+Overstyrer 640px */
+@media screen and (min-width: 1200px) {
+  .container {
+    border: 1px solid transparent;
+  }
+}
+
+Her er kode av hvordan det ser ut. Når bredde er > 640px så får den en rød border og går fra 100% bredde til 80%. Når den er < 640 px så får den en padding og grå border.:
+https://042nq.csb.app/
+
+codesandbox link: https://codesandbox.io/s/css-media-queries-042nq?from-embed
+
+dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries
+</style>
+
+</head>
+<body>
+    
+</body>
+</html>

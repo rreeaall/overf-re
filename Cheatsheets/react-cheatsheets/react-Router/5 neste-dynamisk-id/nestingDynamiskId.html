@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hvordan neste navigasjonen i flere ledd
+
+Nestet routes med id:
+
+Ofte må deler av en nettadressen være dynamisk, som ved redigering av en bestemt artikkel i CMS (ala Wordpress). Vi må da vite hvilken artikkel (den dynamiske delen) som skal redigeres.
+
+Nettadressen kan se slik ut /posts/dynamisk_del/edit.
+
+For å få til dette må navigasjonstrukturen utvides.
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          <Route path="produkter">
+            <Route index element={<Products />} />
+            <Route path=":id" element={<Product />} />
+            {/* Muliggjør /produkter/:id/edit */}
+            <Route path=":id/edit" element={<ProductEdit />} />
+          </Route>
+          <Route path="om" element={<About />} />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+Lager deretter komponent ProductEdit som vises når brukeren navigerer til /produkter/dynamisk_id/edit.
+
+import { useParams } from "react-router-dom";
+
+export default function ProductEdit() {
+  const { id } = useParams();
+
+  return (
+    <article>
+      <h1>Side for å redigere produkt med id {id}</h1>
+    </article>
+  );
+}
+
+For å komme til denne siden kan vi legge til en link på Product. Da denne ligger inne i Product arver den nettadressen den har så langt som er /produkter/:id. Klikk på knappen vil automagisk navigere til /produkter/dynamisk_id/edit.
+
+
+export default function Product() {
+  // ... tatt vekk kode for å gjøre koden enklere å lese
+  return (
+    <article>
+      <h1>{product?.title}</h1>
+      <p>{product?.description}</p>
+      <ul>
+        <li>
+          <Link to="/produkter">Tilbake til liste med produkter</Link>
+        </li>
+        <li>
+          <Link to="edit">Rediger produkt</Link>
+        </li>
+      </ul>
+    </article>
+  );
+}
+
+</script>
+</body>
+</html>

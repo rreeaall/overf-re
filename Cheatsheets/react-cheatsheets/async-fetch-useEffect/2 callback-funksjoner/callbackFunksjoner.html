@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til callbacks - Kjenne til callback hell
+
+Et ord jeg har nevnt tidligere er callbacks. Vi har allerede brukt callbacks når vi lager en eventListener eller bruker setTimeout() i JavaScript. Callbacks er en funksjon vi «legger til» en annen funksjon og som trigges når hovedfunksjonen trigges. Vi bruker en såkalt callback function.
+
+Når vi jobber med asynkron kode, er det er disse funksjonen som havner i køen for asynkrone handlinger.
+
+Callback i vanlig kode:
+
+Nedenfor er to eksempler på hvordan vi bruker en callback funksjon.
+
+Eksempel på en callback:
+
+Du vet ikke når et «klikk på knapp»-event skal skje i JS. Vi blir derfor nødt til å sende med en callback som skal trigges når vi trykker på en knapp. Vi venter på at noen skal trykke på knappen. I mellomtiden kan vi gjøre andre oppgaver.
+
+const element = document.querySelector('className');
+
+function cb() {
+  console.log('clicked');
+}
+
+// cb er forkortelse for callback
+// cb er i dette tilfellet funksjonen som trigges når vi klikker på et element
+// cb er callback-funksjonen
+
+element.addEventListener('click', cb);
+
+Et annet eksempel med bruk av setTimeout:
+
+I dette eksempelet venter vi på timeren. I mellomtiden kan vi gjøre andre oppgaver.
+
+const TIME = 5000;
+
+const warmPizza = () => {
+  console.log('Pizzaen er klar');
+};
+
+// setTimeout tar i mot en callback som trigges etter 5000ms
+// callback funksjonen i dette tilfellet er () => {}
+// resultatet her er at () => {} blir kjørt og ved at denne kjøres blir også 
+// warmPizza(); trigget
+setTimeout(() => {
+  warmPizza();
+}, TIME);
+
+console.log(`Pizzaen er klar om ${TIME / 1000} sekunder`);
+
+Callback hell:
+
+Når det ble mulig å gjøre asynkrone kall via AJAX var callbacks måten å gjøre dette på. Vi skal ikke se på hvordan dette gjøres i dette kurset, men resultatet ble ofte callback hell.
+
+callback hell oppstår når vi må vente på informasjonen fra en asynkron handling før vi kan gjennomføre neste asynkrone handling. Vi må da chaine / neste funksjoner.
+
+Dette er heldigvis ikke måten vi gjør det på i dag og kun ment for å illustrere problematikken.
+
+/**
+ *
+ * Use case - hente alle artikler -> hente alle kategoriene fra artiklene -> 
+ * logge aktivitet
+ * 
+ * Utfordringen nedenfor er nesting av funksjoner og at hver funksjon igjen har 
+ * en callback
+ * 
+ * Kode blir også duplisert
+ *
+ */
+
+const articles = function (slug, callback) {
+  getArticles(username, slug, (error, slug, userInfo) => {
+    if (error) {
+      // duplisert
+      callback(error);
+    } else {
+      getCategories(slug, (error, category) => {
+        if (error) {
+          // duplisert
+          callback(error);
+        } else {
+          logActivity(username, (error) => {
+            if (error) {
+              // duplisert
+              callback(error);
+            } else {
+              callback(null, userInfo);
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+</script>
+</body>
+</html>

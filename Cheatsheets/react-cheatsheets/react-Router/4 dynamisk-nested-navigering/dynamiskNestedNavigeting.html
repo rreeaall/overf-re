@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til dynamisk path - Kjenne til useParams
+
+Dynamisk navigering:
+
+En nettbutikk lister opp alle produkter på nettadressen /produkter. Når du trykker på et produkt navigerer du til /produkter/produkt-navn. Trykker du på et annet produkt navigerer du til /produkter/annet-produkt-navn.
+
+Da det kan være 100 000 slike produkter kan vi ikke sette opp ruter, Route, for alle disse. Det er flere måter å løse dette på.
+
+Vi skal se på:
+- Dynamisk navigering med outlet
+- Dynamisk navigering uten outlet
+
+Dynamisk navigering med Outlet:
+
+Navigasjonen for nettbutikken har strukturen i koden under. Produkt ruta path=":id" er et barn av produkter path="produkter". Vi har nestet produkt under produkter slik at produkt automagisk får nettadressen /produkter/dynamisk-id.
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          {/* Muliggjør /produkter */}
+          <Route path="produkter" element={<Products />}>
+            {/* Muliggjør /produkter/dynamisk-id */}
+            <Route path=":id" element={<Product />} />
+          </Route>
+          <Route path="om" element={<About />} />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+Lage nødvendige komponenter for Products og Product:
+
+For vise innhold på rutene over lages komponentene Products og Product. Products brukes til å vise listen med produkter, mens Product brukes til å vise et enkelt produkt.
+
+Product komponenten:
+
+// Product.js
+import { Link } from "react-router-dom";
+
+export default function Product() {
+
+  return (
+    <article>
+      <h1>{product?.title}</h1>
+      <p>{product?.description}</p>
+      <Link to="/produkter">Tilbake til liste med produkter</Link>
+    </article>
+  );
+}
+
+Products komponenten:
+
+I Products går vi igjennom en liste med produkter og bruker Link for å navigere til et produkt. Når vi trykker på Gå til produkt linken, navigeres brukeren til /produkter/:dynamisk-id.
+
+I eksempelet under brukes Outlet som gjør at visningen av et unikt Produkt vises på samme side som Products (se bilde under i neste avsnitt).
+
+// Products.js
+
+import { Link, Outlet } from "react-router-dom";
+import { products } from "../data/products";
+
+export default function Products() {
+  return (
+    <>
+      <section>
+        {/* Bruker .map for å skrive ut listen med produkter */}
+        {products.map((product) => (
+          <article key={product.id}>
+            <h2>{product.title}</h2>
+            {/* Linker til produkt */}
+            <Link to={`${product.id}`}>Gå til produkt</Link>
+          </article>
+        ))}
+        {/* Ved å bruke outlet vises Product sammen med Products */}
+        {/* Får med andre ord ikke en egen side */}
+        <Outlet />
+      </section>
+    </>
+  );
+}
+
+Siden for produkter ser slik ut /produkter.
+
+Hente ut dynamiske id:
+
+Inne i Product må vi hente ut den dynamiske verdien :id fra nettadressen. Denne trenger vi for å vise frem innholdet til det enkelte produktet.
+
+Bruker da useParams fra React Router. Når vi navigerer til /produkter/1 kan vi via useParams hente ut den dynamiske :id verdien, som blir 1.
+
+// Product.js
+
+import { Link, useParams } from "react-router-dom";
+import { products } from "../data/products";
+
+export default function Product() {
+  // useParams gjør at vi kan hente ut den dynamisk id :id
+  // /produkter/1 => id=1
+  // /produkter/2 => id=2
+  const { id } = useParams();
+
+  // Funksjon brukt for å hente et produkt fra en fiktiv liste
+  const product = products.find((product) => product.id === id);
+
+  return (
+    <article>
+      <h1>{product?.title}</h1>
+      <p>{product?.description}</p>
+      <Link to="/produkter">Tilbake til liste med produkter</Link>
+    </article>
+  );
+}
+
+Siden for produktet /produkter/1 blir som på bildet under. Produktinformasjonen for et produkt vises sammen med informasjonen fra Products komponenten. Dette grunnet at path=":id" er et barn av path="produkter" samt bruk av Outlet.
+
+  <Route path="produkter" element={<Products />}>
+    {/* Muliggjør /produkter/dynamisk-id */}
+    <Route path=":id" element={<Product />} />
+  </Route>
+
+
+  Dynamisk navigering uten Outlet:
+
+  Hvis vi ønsker å vise produktinformasjonen fra Product på en egen side må vi endre oppsettet for navigasjonen. Vi beholder path="produkter", men fjerner komponenten som skal vises.
+
+Deretter legges det til en ny index route som blir brukt for å vise listen med alle produkter <Route index element={<Products />} />. Denne trigges når vi navigerer til /produkter.
+
+// App.js
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          {/* Muliggjør /produkter */}
+          <Route path="produkter">
+            {/* /produkter */}
+            <Route index element={<Products />} />
+            {/* Muliggjør /produkter/en-id */}
+            <Route path=":id" element={<Product />} />
+          </Route>
+          <Route path="om" element={<About />} />
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+Ved å sette det opp på denne måten kan vi fjerne Outlet i Products komponenten. Når vi nå trykker på Gå til produkt vises siden for produkt på egen side.
+
+// Products.js
+
+import { Link } from "react-router-dom";
+import { products } from "../data/products";
+
+export default function Products() {
+  return (
+    <>
+      <section>
+        {/* Bruker .map for å skrive ut listen med produkter */}
+        {products.map((product) => (
+          <article key={product.id}>
+            <h2>{product.title}</h2>
+            {/* Linker til produkt */}
+            <Link to={`${product.id}`}>Gå til produkt</Link>
+          </article>
+        ))}
+        {/* <Outlet /> */}
+      </section>
+    </>
+  );
+}
+
+Produktsiden for /produkter/1 ser slik ut. Informasjon om produktet vises på egen side.
+</script>
+</body>
+</html>

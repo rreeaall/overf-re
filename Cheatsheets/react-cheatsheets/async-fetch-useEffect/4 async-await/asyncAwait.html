@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva async og await brukes til - Kjenne til async og await
+
+Hvorfor async/await?
+- async/await er basere seg på Promise og kom i ES2017. Bakgrunnen for async/await er å gjøre det enklere å jobbe med promises, spesielt når en asynkron handling må vente på en annen.
+- async/await gjør at vi unngår «chaining hell» som følge av .then(). Vi kan få koden vår til å oppføre seg synkront selv om det vi venterpå er skjer asynkront.
+- Letter å debugge da vi kan sette breakpoint på hver await.
+
+Eksempelet nedenfor viser hvordan vi kan bruke async og await til å håndteren ventingen på en Promise.
+- Promise har en status pending, frem til den i dette tilfellet blir resolved og gir verdien I did something tilbake
+
+// Lager en funksjon som returnerer en Promise for å illustrere async
+const doSomethingAsync = () =>
+  // Kun for å simulere at vi har noe som gir en Promise tilbake
+  new Promise((resolve) => {
+    setTimeout(() => resolve('I did something'), 5000);
+  });
+
+// Lager en asynkron funksjon
+// Legg merke til async nøkkelordet
+// async kreves for at await skal fungere
+const doSomething = async () => {
+  const result1 = await doSomethingAsync();
+  console.log(result1); // I did something kommer tilbake etter 5 sekunder
+};
+
+doSomething();
+
+Eksempelet nedenfor viser hvordan vi kan ha to async/await hvor den ene er avhengig av den andre. I dette tilfellet blir det som skjer inne i calculate en synkron handling. Det vil si at const sum = await add(3,x) må vente på const x = await valueX()
+
+const add = (x,y) => new Promise((resolve) => resolve(x + y))
+
+const valueX = () => new Promise((resolve) => resolve(2))
+
+const calculate = async () => {
+  // venter på svaret fra valueX()
+  const x = await valueX();
+  // bruker svaret fra valueX inn i add()
+  // venter på svaret fra add(3, 2)
+  const sum = await add(3, x);
+  console.log(x); // 2
+  console.log(sum); // 5
+};
+
+calculate();
+
+Async funksjoner:
+
+Når vi bruker async nøkkelordet foran en funksjon vil den returnerer en Promise selv om den egentlig ikke gjør det.
+
+// tenker at denne returnerer summen av x + y
+const sum = async (x,y) => x + y
+
+// funksjonen returnerern en promise som er pending
+console.log(sum(2, 3)); // Promise { 5 }
+
+Top level async/await:
+Venter nå på «top lever await» som gjør at vi ikke må ha en async funksjon for å bruke await. Link til top lever await: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await
+
+</script>
+</body>
+</html>

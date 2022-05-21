@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Mål:
+- Overordnet kjenne til de vanligste metataggene
+- Kjenne til hvordan bruke metatagger på en nettside -->
+
+Hva er metatagger?
+
+Metatagger er tagger som beskriver innholdet i HTMLen vår. Den brukes av f.eks bots til å bedre tolke innholdet, vise tittelen på siden i nettleservinduet, vise favicon m.m
+
+Hva er de vanligste metataggene?
+
+I '<head></head>' på HTML dokumentet har vi '<meta>' tagger og link til andre filer som CSS, JavaScript og favicon.
+
+'<meta>' beskriver / sier noe om innholdet i HTML. Eksempelvis:
+- title
+- description
+- author
+- charset
+- viewport
+
+'<link>' brukes til å linke til eksterne ressurser (css, JS, favicon)
+
+'<style>' brukes til inline styling
+
+Eksempel på bruk av metatagger:
+
+<!-- Hvilken versjon av HTML som brukes -->
+<!DOCTYPE html>
+<!-- lang => hjelper for google and tilgjengelighet ved 
+å sette foretrukket språk -->
+<html lang="no">
+  <head>
+    <!-- charset="utf-8" => Encoding av bokstaver som brukes / tillater 
+    "ukjente" bokstaver som Æ -->
+    <meta charset="utf-8" />
+    <!-- title => Tittelen til nettsiden => det som vises i nettleser tabben -->
+    <title>Shown in browser tab and google search</title>
+    <!-- name="author" => Hvem som har forfattet innholdet -->
+    <meta name="author" content="" />
+    <!-- name="description" => Hva som vises i beskrivelsen ved f.eks 
+    søk i Google -->
+    <meta name="description" content="" />
+    <!-- name="viewport" => for at css media queries skal fungere -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- property="og:image" m.fl => hjelpetagger for visning i sosiale medier -->
+    <meta property="og:image" content="url" />
+    <meta property="og:description" content="desc" />
+    <meta property="og:title" content="title" />
+    <!-- rel="shortcut icon" => iconet som viset i nettlesertabben -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <!-- rel="stylesheet" => bruk av eget stilark -->
+    <link rel="stylesheet" href="my-css-file.css" />
+    <!-- Bruk av inline styling -->
+    <style>
+      body {
+        background-color: pink;
+      }
+    </style>
+  </meta>
+  <body>
+    <!-- bruk av javascript fil. defer = last inn js når html 
+    lastes inn men bruk js når html er ferdig lastet. -->
+    <script src="my-js-file.js" defer></script>
+  </body>
+</html>
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+</body>
+</html>

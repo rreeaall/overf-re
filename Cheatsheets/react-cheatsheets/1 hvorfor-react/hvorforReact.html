@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Mål: Kjenne til hva React gjør enklere enn vanlig JS -->
+<script>
+React er et frontend JavaScript rammeverk. Årsaken til at slike rammeverk eksisterer er å lage frontend applikasjoner som er mer komplekse og såkalte statefulle (applikasjoner som er avhengig at vi "husker" hva brukeren har gjort / gjør)
+
+Enkle applikasjoner kan vi fint bruke JavaScript til å løse, men jo mer komplekse de blir jo mer krevende er det å skrive JavaScripten som løser problemet.
+
+Under er et enkelt eksempel på et skjema som har validering og håndterer sending av data. Dette eksempelet alene er ikke veldig omfattende, men om vi skal gjenbruke det, gjenbruke deler av koden, utvide med modal-bokser og mer og bedre validering, håndtere error ved sending ++ så blir det fort mer uoversiktlig og mye kode som er enklere kan løse med f.eks React.
+
+let emailValue = null;
+let passwordValue = null;
+
+const form = document.querySelector("form");
+const button = document.querySelector("button");
+const email = document.querySelector("#email");
+const password = document.querySelector("#password");
+const validationField = document.querySelector(".validation");
+const inputs = document.querySelectorAll("input");
+
+const addFieldErrorStyle = () => {
+  return "border: 1px solid red";
+};
+
+const resetFieldErrorStyle = () => {
+  Array.from(inputs).forEach((input) => (input.style = ""));
+};
+
+const setValidationError = (fields, message) => {
+  validationField.innerHTML = message;
+  resetFieldErrorStyle();
+  if (!fields) return;
+  if (fields && Object.keys(fields)?.length > 0) {
+    for (const field of Object.values(fields)) {
+      field.style = addFieldErrorStyle();
+    }
+    return;
+  }
+  fields.style = addFieldErrorStyle();
+};
+
+const setLoading = (loading) => {
+  if (loading) {
+    button.innerHTML = "Sender ...";
+  } else {
+    button.innerHTML = "Registrer";
+  }
+};
+
+const validateForm = () => {
+  if (!emailValue && !passwordValue) {
+    setValidationError({ email, password }, "Missing required fields");
+    return false;
+  } else if (!emailValue) {
+    setValidationError(email, "Missing required field: Email");
+    return false;
+  } else if (!passwordValue) {
+    setValidationError(password, "Missing required field: Password");
+    return false;
+  } else {
+    setValidationError(null, "");
+    return true;
+  }
+};
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const valid = validateForm();
+  if (valid) {
+    setLoading(true);
+    setTimeout(() => {
+      console.log("Sendt");
+      setLoading(false);
+    }, 2000);
+  }
+};
+
+const handleEmailChange = (event) => {
+  emailValue = event.currentTarget.value;
+};
+
+const handlePasswordChange = (event) => {
+  passwordValue = event.currentTarget.value;
+};
+
+form.addEventListener("submit", handleSubmit);
+email.addEventListener("change", handleEmailChange);
+password.addEventListener("change", handlePasswordChange);
+
+I slike eksempler som det over, er det håndteringen av "state" som byr på utfordringer, det vil si lagring av, oppdatering av og bruk av data som brukeren sender inn. Informasjon vi trenger for å oppdatere grensesnittet. Koden er også på nåværende tidspunkt ikke enkelt å gjenbruke og lite dynamisk.
+Hvordan løser React dette?
+
+Skulle vi løst liknende eksempel i React ville vi tenkt på strukturen på en annen måte. Vi ville brukt noe som i React kalle komponenter for å lage de ulike delene av skjema, et hook kalt useState for å håndtere state og JSX til å lage grensesnittet.
+
+En annen viktig hjelp vi får fra biblioteker som React er ferdig setup som gjør at vi kommer raskere i gang og hvor noen andre utvikler som mest trolig er flinkere enn oss har sørget for at ytelse m.m er ivaretatt.
+
+</script>
+</body>
+</html>

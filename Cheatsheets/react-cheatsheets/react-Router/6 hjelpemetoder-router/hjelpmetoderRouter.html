@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til useNavigate - Kjenne til useSearchParams
+
+Det finnes en rekke hooks (hjelpeverktøy) React Router gir oss. De vanligste er:
+- useNavigate
+- useSearchParams
+
+useNavigate:
+
+Brukes når vi ønsker å navigere brukeren til en gitt nettadresse. F.eks etter at vi har endret eller slettet noe. I eksempelet under brukes useNavigate til å navigere brukeren tilbake til listen med produkter når et produkt har blitt slettet.
+
+removeProduct og getProduct er kun hjelpefunksjoner laget for å fjerne produktet fra listen.
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { getProduct, removeProduct } from "../data/products";
+
+export default function Product() {
+  // Bruker useNavigate for å få mulighet til å navigere
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const product = getProduct(id);
+
+  // Funksjon trigget når vi trykker på "fjern produkt"
+  const handleRemoveProduct = () => {
+    // Bruker hjelpefunksjonen til å fjerne produktet
+    removeProduct(id);
+    // Navigerer tilbake listen med produkter (som da har mistet et produkt)
+    navigate("/produkter");
+  };
+
+  return (
+    <article>
+      <button type="button" onClick={handleRemoveProduct}>
+        Fjern produkt
+      </button>
+      <h1>{product?.title}</h1>
+      <p>{product?.description}</p>
+      <Link to="/produkter">Tilbake til liste med produkter</Link>
+    </article>
+  );
+}
+
+useSearchParams (avansert):
+
+Hvis vi ønsker å søke etter et produkt i en liste med produkter kan vi bruke useSearchParams. Når vi bruker et skjema til å søke får vi en nettadresse på denne formen /produkter?name=produktNavn. Vi får noe som kalles query parameters, ?name=.
+
+Med React Router kan vi bruke useSearchParams til å hente ut disse parametrene. I koden under blir skjema sendt når brukerne trykker på søk. Hvis den som søker har skrevet en verdi i søkefeltet blir nettadressen /produkter?title=søkeordet.
+
+Med useSearchParams sin searchParams kan vi sjekke om det finnes en ?title og hente ut verdien. Denne verdien kan brukes til å søke i listen med produkter.
+
+// Products.js
+
+import { Link, useSearchParams } from "react-router-dom";
+import { findProductByTitle, products } from "../data/products";
+
+export default function Products() {
+  // Bruker useSearchParams for å oppdatere /din-url?param
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Prøver å hente parameteren "title" sin verdi. 
+  // Det vi skrev i søkeboksen som nå finnes i nettadressen
+  const searchTerm = searchParams.get("title");
+
+  // Hjelpefunksjon brukt til å søke
+  const filteredProducts = findProductByTitle(searchTerm);
+
+  // Funksjon som håndtere søket
+  const handleSearch = (event) => {
+    // Forhindrer at skjema sender data
+    event.preventDefault();
+    // Henter verdien i inputfeltet
+    const title = event.target?.elements[0]?.value;
+    if (title) {
+      // Oppdaterer søkeparameteren. Får da /produkter?title=det_vi_skrev
+      setSearchParams({ title });
+    } else {
+      // Fjerner ?title= i nettadresen. Får da /produkter
+      setSearchParams({});
+    }
+  };
+
+  return (
+    <>
+      {/* Lager et skjema for å håndtere søk */}
+      {/* Trykk på søk trigger handleSearch */}
+      <form onSubmit={handleSearch}>
+        <input type="search" />
+        <button type="submit">Søk</button>
+      </form>
+
+      {/* Viser produkter som matcher søket */}
+      {searchTerm && filteredProducts?.length > 0 ? (
+        <ul>
+          {filteredProducts.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      ) : null}
+
+      {/* Trigges hvis søket er tomt */}
+      {searchTerm && filteredProducts?.length === 0 ? (
+        <p>Fant ikke produktet {searchTerm}</p>
+      ) : null}
+
+      <section>
+        {products.map((product) => (
+          <article key={product.id}>
+            <h2>{product.title}</h2>
+            <Link to={`${product.id}`}>Gå til produkt</Link>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+Slik ser komponenten ut når vi bruker den. I nettadressen får vi da /produkter?title=nokia. Resultatet av søket gir oss tittelen til de to produktene som har Nokia i seg.
+</script>
+</body>
+</html>

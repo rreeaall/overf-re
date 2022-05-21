@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+/* Mål:
+- Kjenne til hvordan stilsette bakgrunnsbilder
+- Kjenne til hvordan stilsette vanlig bilder
+- Kjenne til hvordan bruke filter på bilder */
+
+Vi må ofte tilpasse bilder slik at de passer inn i designet vårt. Hvordan vi tilpasser avhenger av om vi bruker vanlig bilder eller bakgrunnsbilder.
+
+Vi kan bruke CSS til å bestemme hvor fokus skal være i bildet og hvordan bildet skal forholde seg til "boksen" som ligger rundt bildet (croppes). I tillegg kan vi påvirket utseendet med diverse filter.
+
+Hvordan tilpasse bilder via img-taggen?
+
+For å påvirke hvordan vanlige bilder oppfører seg kan vi bruke object-fit og/eller object-position.
+
+/* Kun til demo. Bruk av to like stiler (object-fit) gjør 
+at siste vinner som nå er cover */
+img {
+  width: 100%;
+  height: 250px;
+
+  /* virker som background-size: contain 
+  (bildet beholder sin str (aspect ratio)) */
+  object-fit: contain;
+
+  /* virker som background-size: cover 
+  (bildet croppes for å fylle hele boksen) */
+  object-fit: cover;
+
+  /* virker som background-position: center center */
+  object-position: center center; 
+}
+
+Hvordan tilpasse bakgrunnsbilder?
+
+I eksempelet nedenfor ser du hvordan justere et bakgrunnsbilde.
+
+/* Kun til demo. Bruk av like stiler (background-size) 
+gjør at siste vinner som nå er cover */
+.background .img {
+  color: #fff;
+  width: 100%;
+  /* må spesifisere en høyde ellers er boksen by default kollapset */
+  height: 100%;
+  background-image: url("https://image.url");
+  /* viser hele bildet, croppes ikke */
+  background-size: contain;
+  /* forvrenger bildet horisontalt (gjør det smalere) */
+  background-size: 20% 100%;
+  /* forvrenger bildet vertikalt (gjør det lavere) */
+  background-size: 100% 20%;
+  /* cropper bildet */
+  background-size: cover;
+  background-position: center center;
+  /* ikke repetere bildet hvis bildet ikke fyller hele boksen */
+  background-repeat: no-repeat;
+  /* la bildet scrolle med. Hvis ønske om parallax ville vi brukt fixed */
+  background-attachment: scroll;
+}
+
+Kan også lage en gradient om vi ønsker og plassere den over bildet.
+
+/* lineær gradient som starter usynlig fra øvre venstre hjørne og avslutter med rose i nedre høyre hjørne */
+.background.gradient .img {
+  background-image: linear-gradient(to bottom right, transparent, pink),
+    url("https://images.unsplash.com/photo-1593158778894-0af193eb325c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80");
+}
+
+Hvordan bruke filter?
+
+Vi kan legge på filter med css-filter. Noen av filtrene som er vanlig å bruke kan du se i koden nedenfor. Her må man prøve seg frem for å finne ønsket effekt.
+
+.blur {
+  filter: blur(4px);
+}
+
+.greyscale {
+  filter: grayscale(100%);
+}
+
+.opacity {
+  filter: opacity(0.5);
+}
+
+.dropshadow {
+  filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.5));
+}
+
+.combo {
+  filter: brightness(50%) sepia(60%);
+  clip-path: circle(200px at center);
+}
+
+Link til nettside av kode: https://6jwhy.csb.app/
+samme link i codesandbox: https://codesandbox.io/s/css-image-6jwhy?from-embed
+
+Dokumentasjon:
+MDN - filter:
+https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur()
+MDN - object-fit:
+https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
+MDN - object-position:
+https://developer.mozilla.org/en-US/docs/Web/CSS/object-position
+MDN - gradient:
+https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient()
+MDN - background size: 
+https://developer.mozilla.org/en-US/docs/Web/CSS/background-size
+</style>
+</head>
+<body>
+    
+</body>
+</html>

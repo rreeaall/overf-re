@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til dokumentasjon for React Router - Kjenne til andre brukesområder for React Router
+
+Sende props til route:
+
+I mange tilfeller kan det være behov for å sende props (data) til en komponent via App komponenten (der navigasjonen bor). Dette for å sikre at komponenten har dataen den trenger når vi navigerer til den.
+
+Eksempler på dette kan være:
+- Sende info om brukeren
+- Sende en oversikt over produkter lagret i handlekurven
+- Sende all data vi trenger fra App til de rette komponentene slik at dataen er der når vi kommer til siden (gjelder små applikasjoner)
+
+I dette eksempelet utvides App.js til å hente informasjon om brukeren slik at vi kan sende dataen via props til Layout. Da Layout omfavner alle de andre komponentene kan vi vise informasjon om brukeren på alle sider.
+
+// App.js
+
+// ... fjernet alle import for å gjøre koden mindre
+
+const users = [
+  {
+    id: "1",
+    name: "Marius"
+  },
+  {
+    id: "2",
+    name: "Trude"
+  },
+  {
+    id: "3",
+    name: "Finn"
+  }
+];
+
+export default function App() {
+
+  // Funksjon som henter random bruker
+  const getUserProfile = () => {
+    return users[Math.floor(Math.random() * users.length)];
+  };
+
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        {/* Sender info om bruker til Layout */}
+        <Route element={<Layout user={getUserProfile()} />}>
+        {/* Fjernet de andre rutene for å gjøre eksemplet mindre */} 
+      </Routes>
+    </>
+  );
+}
+
+Kan hente ut data om brukeren i Layout. På alle sider vil det nå stå Velkommen NavnPåBruker.
+
+// Layout.js
+
+import { Outlet } from "react-router-dom";
+
+export default function Layout({ user }) {
+  return (
+    <>
+      <span>Velkommen {user.name}</span>
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
+}
+
+Andre eksempler:
+
+Det finnes andre bruksområdet som er aktuelt å se på. Kommentere kort det jeg opplever er viktig å få ut av eksemplene. Anbefaler å trykke på linken for å se hele koden.
+
+Oppdatere “aktivt filter” når man filtrerer en liste med produkter:
+
+Denne koden henter query parameter ?brand= fra nettadressen og bruker den til å si hvilket filter som er aktivt. Her kan du se hele koden. (OBS: Er i TypeScript): https://stackblitz.com/github/remix-run/react-router/tree/main/examples/custom-filter-link?file=src%2FApp.tsx
+
+
+// Får brand som prop
+// Bruker den i Link til å sette query parameter ?brand=merkeNavn
+function BrandLink({ brand, children, ...props }) {
+  let [searchParams] = useSearchParams();
+
+  // Sjekker hvilket brand som er aktivt
+  // Det som er aktivt får da rød farge
+  let isActive = searchParams.get("brand") === brand;
+
+  return (
+    <Link
+      to={`/?brand=${brand}`}
+      {...props}
+      style={{
+        ...props.style,
+        color: isActive ? "red" : "black"
+      }}
+    >
+      {children}
+    </Link>
+  );
+}
+
+Custom Link komponent (avansert):
+
+Denne koden bruker flere hjelpeverktøy fra React Router som gjør det mulig å vite hvilken nettadresse vi er på. Verktøyene gjør en del automagi for oss.
+
+Her kan du se hele koden. (OBS: Er i TypeScript). https://stackblitz.com/github/remix-run/react-router/tree/main/examples/custom-link?file=src/App.tsx
+
+Under ser du hva vi får tilbake når en nettadresse eksisterer. Hvis nettadressen ikke eksisterer får vi null for match.
+
+function CustomLink({ children, to, ...props }) {
+  // Henter ut informasjon om nettadressen basert på hva to er
+  // Eks <CustomLink to="/about">About</CustomLink>
+  // to => /about
+  // resolved blir da => {pathname: '/about', search: '', hash: ''}
+  let resolved = useResolvedPath(to);
+
+  // bruker useMatch for å sjekke om nettadressen vi er på matcher
+  // infoen vi får tilbake fra useResolved() 
+  let match = useMatch({ path: resolved.pathname, end: true });
+  // {params: {…}, pathname: '/about', pathnameBase: '/about', pattern: {…}}    
+
+  return (
+    <div>
+      <Link
+        style={{ textDecoration: match ? "underline" : "none" }}
+        to={to}
+        {...props}
+      >
+        {children}
+      </Link>
+      {match && " (active)"}
+    </div>
+  );
+}
+
+Autentisering:
+
+Noe som er veldig vanlig å håndtere i applikasjoner er hva du får lov til å se / om du er logget inn. React Router har løsninger som gjør det mulig å forhindre at deler av innholdet blir tilgjengelig.
+
+Da dette er et mer avansert eksempel henviser jeg til koden for dette: https://stackblitz.com/github/remix-run/react-router/tree/main/examples/auth?file=src%2FApp.tsx
+</script>
+</body>
+</html>

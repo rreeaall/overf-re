@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva som fører til sideeffects - Kjenne til bruk av useEffect
+
+Når vi bruker React må vi være obs hvordan det å oppdatere state, reagere på ulike events (clickEvent m.fl) og det endre variabler påvirker komponenten vår. Vi sier at disse handlingene trigger sideeffects.
+Hva er sideeffects?
+
+Sideeffects oppstår når en funksjon oppdaterer en datatype, variable, gir systemfeil, henter noe fra API, henter data fra LocalStorage m.fl. Den endrer noe utenfor sitt eget scope.
+
+Viktig å kjenne til da vi må håndtere det for å få applikasjonen til å virke slik vi ønsker.
+
+React og sideeffects:
+
+React sin måte å håndtere sideffects på er å lage komponenten på nytt (re-render). Vi ser ikke at dette skjer da det utføres lynraskt pluss at det skjer behind the scenes.
+
+Side-effects medfører re-render av en komponent. Skjer som følge av:
+- Endring i state (via props eller intern state i en komponent)
+- Endring i state hos en parent component vil medføre at barna også re-rendres, uavhengig om props på barnet har endret seg
+- Asynkrone API kall
+- Oppdatering av globale variabler inne i en funksjon
+
+Vi er i React avhengig av side-effects for å utføre en rekke operasjoner (eks hente data om en bruker, eller posts for å fylle inn i DOM).
+
+Livssyklusen til en komponent:
+
+En komponent i React har ulike faser den går igjennom. Vi kaller det livssyklusen til en komponent.
+
+I korte trekk kan man si at en komponent går igjennom 3 faser:
+- Mount - komponenten lastes inn og blir tilgjengelig (mounted til DOM og rendres)
+- Update - når states og props på komponenten endres får vi en re-render
+- Unmount - komponent fjernes og blir gjort utilgjengelig, eks når vi navigerer vekk fra den eller den toggles bort på et vis (unmount fra DOM).
+
+useEffect:
+
+Som nevnt tidligere har React en rekke hooks vi kan bruke for å oppnå det vi ønsker. Hooks er hjelpeverktøy / funksjoner som vi har tilgjengelig i React-biblioteket. Verktøy vi kan bruke for å f.eks få kontroll på state via useState
+
+I tillegg til useState har vi useEffect. useEffect er et hook vi kan bruke for å få kontroll på sideeffects og livssyklusen til en komponent.
+
+Formen på useEffect er som følger
+
+// må importere useEffect for å kunne bruke den
+import { useEffect } from 'react'
+
+// useEffect er navnet på selve hooket
+// tar i mot en callback funksjon som trigges () => {}
+useEffect(() => {
+    // her kan vi trigge det vi ønsker. F.eks trigge en funksjon e.l
+    effect
+    // denne funksjonen kjører når komponenten unmountes (fjernes)
+    return () => {
+      cleanup
+    }
+  // her styrer vi hvordan useEffect skal trigges
+  // den har tre konfigurasjoner hvor disse to er viktigst:
+  // [] => vil si at useEffect skal trigges når komponenten lages (mount)
+  // [input] => vil si at useEffect skal trigges når komponenten lages og når 
+  // input verdien endrer seg
+  }, [input])
+
+Eksempel på bruk av useEffect i en komponent
+
+// må importere useState og useEffect for å kunne bruke dem
+import { useState, useEffect } from 'react';
+
+const Component = () => {
+  // lager to statevariabler vi kan oppdatere
+  const [count, setCount] = useState(0)
+  const [data, setData] = useState({})
+
+  // #1
+  // data blir oppdatert med verdiene nedenfor når komponenten lages
+  // data kunne kommet fra et api, men er nå hardkodet
+  useEffect(() => {
+    // oppdaterer data via setData (trucken)
+    setData({id: 1, name: "Ola", id: 2, name: "Fride"})
+    // [] => trigger useEffect kun når komponenten lages
+  }, [])
+
+  // #2
+  useEffect(() => {
+    console.log(count)
+     // [count] => trigger useEffect når komponenten lages og hver gang count 
+     // endrer seg
+  }, [count])
+
+  // funksjon som oppdaterer count verdien
+  const handleCountUpdate = () => {
+    // oppdaterer count ved å legge til 1 på den gamle verdien
+    // dette introduserer en sideeffect som gjør at useEffect #2 over blir 
+    // trigget
+    // #1 blir ikke trigget da den kun trigges når komponenten lages
+    setCount((c) => c + 1);
+  }
+
+  return(
+    <>
+      {/* Bruker JSON.stringify() får å debugge hva data innholder */}
+      <div>{JSON.stringify(data)}</div>
+      <button type="button" onClick={handleCountUpdate}>Øke count</button>
+    </>
+  )
+}
+
+// må eksportere komponenten for å kunne bruke den andre steder
+export default Component
+
+Som med useState skal useEffect kun brukes før return i en komponent.
+
+const Component = () => {
+  // useEffect her
+  return ()
+}
+export default Component
+
+const Component = () => {
+  return (
+    // ikke useEffect her
+  )
+}
+
+export default Component
+
+I tillegg til useEffect finnes noe som heter useLayoutEffect. I 99% av tilfellene brukes useEffect. Aldri brukt useLayoutEffect.
+
+</script>
+</body>
+</html>

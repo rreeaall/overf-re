@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* Mål: Kjenne til ulike måter å plassere HTML. Kjenne til z-index og hva den brukes til. Kjenne til hvordan bruke top, left, right, bottom. */
+
+        For å posisjonere et element bruker vi:
+
+        1. position brukes til å si hvordan elementet skal forholde seg til sine omgivelser.
+           - relative: forhold deg til omgivelsene rundt, men lytt til posisjonering og z-index
+           - top/bottom: +/- px påvirker Y-aksen
+           - left/right: +/- px påvirker X-aksen
+        
+        2. absolute brukes til å plassere elementet i forhold til nærmeste "parent" som har position: relative. Brukes når vi vil absolutt posisjonere noe inne i en gitt ramme. F.eks plassere visningen av kategorier i hjørnet på et produktbilde eller "X"-knappen når vi skal lukke et vindu.
+       
+        3. fixed brukes når vi vil forholde oss til skjermvinduet. F.eks plassere en "tilbake til toppen" knapp nede i høyre hjørne.
+    
+        4. sticky brukes når vi vil at et element skal respondere på scroll i Y-aksen, men forholde seg til omgivelsene sine (sin parent). F.eks en navigasjon som følger oss mens vi scroller.
+    
+        5. z-index brukes når vi vil endre hvordan elementet plasseres i Z-aksen (dybden). Default er at alle elementer har samme plassering i z-aksen (samme høyde over bakken). F.eks en knapp som plasseres over et bilde.
+
+        target-element {
+        position: fixed | relative | absolute | sticky;
+        top: value i px, %, vh, vw;
+        left: value i px, %, vh, vw;
+        right: value i px, %, vh, vw;
+        bottom: value i px, %, vh, vw;
+        z-index: value i number;
+        }
+        n
+
+        /* Posisjonere absolutt innenfor nærmeste element som har relative posisjon. Bryter ut av flowen */
+        .absolute {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: teal;
+}
+
+/* Posisjonere hvor som helst i nettleservinduet. Bryter flowen */
+.fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: tomato;
+}
+
+.relative1 {
+  position: relative;
+  background-color: orchid;
+  /* Plasseres over/foran/høyere enn elementer med z-index 1 */
+  z-index: 2;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Relativ posisjon og trekkes 30px opp fra sin opprinnelige posisjon */
+.relative2 {
+  position: relative;
+  top: -30px;
+  background-color: yellow;
+  z-index: 1;
+}
+
+/* Kleber seg til toppen av nærmeste parent */
+.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: papayawhip;
+}
+
+Hva må jeg tenke på når jeg skal posisjonere et element?
+
+Alle elementer er by default static, som innebærer at de ikke påvirkes av posisjoneringen. Vi må derfor gi elementet en position-verdi. z-index krever at et element har en position-verdi (relative, absolute, fixed, sticky).
+
+Codesandbox lenke: https://codesandbox.io/s/css-position-lkv04?from-embed
+
+dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/position
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index
+    </style>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva promises er - Kjenne til ulike statuser på promises
+
+Målet i denne leksjonen er at du forstår hva promises er slik at det blir enklere å skjønne hva som skjer når vi henter data fra APIer. Promises gjør det enklere å jobbe med asynkron kode da vi får en ny måte å vente på at noe skal bli ferdig.
+
+Grunnen til at det er viktig å kjenne til promises er at biblioteker vi bruker til å hente data via API gir oss Promise tilbake.
+
+Promises:
+
+Promises kan enkelt defineres som => noe som venter på at en verdi skal bli tilgjengelig.
+
+Som nevnt i eksemplene tidligere utføres ikke asynkrone oppgaver umiddelbart. De havner i en egen kø og kommer tilbake fra denne køen når de er ferdig (resolved). I mellomtiden må vi vente på svaret.
+
+Eksempelet nedenfor viser hvordan vi kan lage og bruke en Promise for å simulere at vi venter på at noe skal bli klart.
+
+Når vi bruker biblioteker seinere i kurset er det kun .then() og .catch() vi må forholde oss til da biblioteket lager promiseen.
+
+const done = true;
+
+// lager en Promise for å simulere hvordan det brukes
+// lages ved new Promise
+// bruker en callback (resolve, reject) => {}
+// resolve brukes når noe bra har skjedd
+// reject brukes når noe feil har skjedd
+const isItDoneYet = new Promise((resolve, reject) => {
+  if (done) {
+    const workDone = 'Here is the thing I built';
+    resolve(workDone);
+  } else {
+    const why = 'Still working on something else';
+    reject(why);
+  }
+});
+
+const checkIfItsDone = () => {
+  // bruker .then for å vente på håndteringen av promisen
+  // bruker .catch for å håndtere 'feilen' som oppstod når promisen ble håndtert
+  isItDoneYet
+    .then((ok) => {
+      console.log(ok);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+checkIfItsDone();
+
+Promises har tre ulike statuser:
+
+Når vi bruker promiser er det tre statuser vi må kjenne til.
+1. Pending => venter fortsatt (annen kode kan kjøre så lenge)
+2. Resolved => promises er behandlet (resolved) og informasjonen tilgjengelig
+3. Rejected => promisen er behandlet, men noe gikk galt underveis
+
+Callback > Promises:
+
+I forrige leksjon viste jeg hvordan vi får callback hell når vi kobler ulike funksjoner sammen. Promises introduserer noe kalt promise land når vi må vente til en oppgave er ferdig før vi kan starte på neste.
+
+Eksempelet nedenfor illustrerer promise land da vi ikke kan starte på hus 2 før hus 1 er ferdig o.s.v
+
+// promises gjør det enklere å chaine ting som er avhengig av hverandre enn 
+// callbackhell men kalles promiseland
+const singleHouseBuilder = buildHouse('Moderne').then((house) => {
+  console.log('Første hus ferdig: ', house);
+  return buildHouse('Tradisjonelt').then((house) => {
+    console.log('Hus nummer 2 ferdig: ', house);
+    return buildHouse('Funkis').then((house) => {
+      console.log('Hus nummer 3 ferdig: ', house);
+    });
+  });
+});
+
+Utfordringene med promise land danner grunnlaget for async/await som vi skal se på i neste leksjon.
+</script>
+</body>
+</html>

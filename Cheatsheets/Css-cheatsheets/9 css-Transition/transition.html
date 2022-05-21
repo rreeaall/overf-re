@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+/* Mål:
+- Overordnet kjenne til css transition
+- Kjenne til hvordan styre overgangen mellom to stiler */
+
+Transition kan brukes til å styre overgangen mellom to stiler. Vi kan med transition lage "penere" overganger når et element skifter fra et design til et annet.
+
+Default skifter den "brutalt" mellom stilene uten noen form for overgang. F.eks om noe skal gå fra usynlig til synlig kan vi få overgangen til å være flytende.
+
+Transition egner seg best for hovereffekter og brukes ofte på opacity og transform property. 
+
+.line {
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  margin: 15px 0;
+}
+
+.line:hover {
+  background: red;
+  width: 100%;
+}
+
+/* Bruk 3 sekunder, lik fart (linear) for å få full 
+bredde når vi har musepekeren over */
+
+/* Bruk 1 sekund til å skifte bakgrunnen, men start 
+sakte og avslutt raskt (ease-in) */
+.line.linear {
+  transition: width 3s linear, background 1s ease-in;
+}
+
+/* Bruk 3 sekunder, start sakte (ease-in) for å få 
+full bredde når vi har musepekeren over */
+.line.ease-in {
+  transition: width 3s ease-in;
+}
+
+/* Bruk 3 sekunder, avslutt sakte (ease-out) for å få 
+full bredde når vi har musepekeren over */
+.line.ease-out {
+  transition: width 3s ease-out;
+}
+
+/* Bruk 3 sekunder, start sakte og avslutt sakte (ease-in-out) 
+for å få full bredde når vi har musepekeren over */
+.line.ease-in-out {
+  transition: width 4s ease-in-out;
+}
+
+Link til kode nettside: https://7dwoi.csb.app/
+codesandbox link av samme: https://codesandbox.io/s/css-transition-7dwoi?from-embed
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions
+</style>
+</head>
+<body>
+    
+</body>
+</html>

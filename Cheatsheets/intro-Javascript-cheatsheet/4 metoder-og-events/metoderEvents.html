@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+// Mål: - Lære hvordan jobbe med DOM-events - Lære hvilke metoder som finnes på event - Lære nyttige metoder til arrays, strings og objekter
+
+Innholdsfortegnelse:
+1. Metoder i DOM
+2. Metoder brukt til å manipulere string
+3. Metoder brukt på arrays
+4. Metoder brukt på objekter
+5. Styling i JS
+6. Events
+
+Metoder i DOM:
+
+Metoder brukes for å endre, lage eller manipulere elementer i DOM. Det finnes utrolig mange, jeg nevner kun noen få.
+
+.createElement():
+
+Lager et tomt HTML-element.
+
+const newSection = document.createElement('section');
+
+.textContent:
+
+Brukes til å sette tekst til et element. Kan også hente tekstlig innhold fra et element.
+
+const newSection = document.createElement('h1');
+
+newSection.textContent = 'En overskrift';
+
+.getElement:
+
+Det finnes et par forskjellige metoder for å returnere et element, eller flere.
+
+.getElementById():
+
+Henter første element med lik ID.
+
+// HTML
+<h1 id='page-title'>En tittel</h1>;
+
+// JS
+let title = document.getElementById('page-title');
+
+.getElementsByTagName():
+
+Henter alle elementer med lik tag
+
+// HTML
+<h1>Overskrift</h1>
+<h1>Enda en overskrift</h1>
+
+// JS
+let headings1 = document.getElementsByTagName('h1');
+
+.getElementsByClassName():
+
+Henter alle elementer med lik klasse.
+
+// HTML
+<button class='btn-save'>Lagre</button>;
+
+// JS
+let saveBtn = document.getElementsByClassName('btn-save');
+
+.querySelector():
+
+Henter første HTML-element som matcher tag, id eller klasse.
+
+// HTML tag
+let firstHeading = document.querySelector('h1');
+
+// Klasse, legg merke til punktum
+let menuBtn = document.querySelector('.menu-btn');
+
+// Id, legg merke til hashtag
+let menuBtn = document.querySelector('#menu-btn');
+
+.querySelectorAll():
+
+Henter alle elementer, enten på tag, id eller klasse
+
+// HTML tag
+let allHeadings = document.querySelectorAll('h1');
+
+// Klasse, legg merke til punktum
+let menuBtns = document.querySelectorAll('.menu-btn');
+
+// Id, legg merke til hashtag
+let menuBtns = document.querySelectorAll('#menu-btn');
+
+Flere eksempler på bruk av querySelector og querySelectorAll:
+https://www.javascripttutorial.net/javascript-dom/javascript-queryselector/
+
+
+.innerHTML:
+
+Brukes til å hente ut eller lage innhold.
+
+<p id="id">Tekst</p>
+
+const id = document.getElementById("id")
+console.log(id.innerHTML) // Tekst
+
+id.innerHTML = "Oppdatert tekst"
+
+console.log(id.innerHTML) // Oppdatert tekst
+
+.appendChild():
+
+Legger et "barn" under en "forelder".
+
+// Henter første section på ID
+let aboutUsSection = document.querySelector('#about-us');
+
+// Lager en tittel
+let aboutHeading = document.createElement('h1');
+
+// Putter heading inn i section
+aboutUsSection.appendChild(aboutHeading);
+
+.removeChild():
+
+Det er også mulig å fjerne et "barn" fra en foreldernode.
+
+
+Under har vi om Metoder brukt til å manipulere string:
+
+.toUpperCase() og .toLowerCase():
+
+Endrer stringen til kun store eller små bokstaver. Kan brukes rett på stringen eller på variabelen.
+
+let big = 'En string mED storE OG små Bokstaver'.toUpperCase();
+// EN STRING MED STORE OG SMÅ BOKSTAVER
+
+let small = 'EN annen String med stORE og SMå bokstaVER';
+
+console.log(small.toLowerCase());
+// en annen string med store og små bokstaver
+
+.trim():
+
+Fjerner whitespace (mellomrom og tab) fra begge sider av stringen.
+
+let spaces = '       unødvendige mellomrom      ';
+
+console.log(spaces.trim());
+// unødvendige mellomrom
+
+Det finnes også .trimStart() og .trimEnd() , der sistnevnte kan være lur for å fjerne mellomrom eller tabs på slutten av input i et skjema, for eksempel.
+
+
+Metoder brukt på arrays:
+
+Det finnes en rekke metoder vi kan bruke på arrays (lister), her er noen av de vanligste.
+
+.length og hente verdi på index:
+
+Brukes til å hente ut verdier fra en array.
+
+const baseArray = [1, 2, 50];
+const firstValue = baseArray[0]; // 1
+const arrLength = baseArray.length; // 3
+const lastValue = baseArray[baseArray.length - 1]; // 50
+
+.includes og .indexOf:
+
+.includes brukes til å undersøke om en array inneholder en bestemt verdi. .indexOf brukes til å finne index (plassen) til en verdi. Hvis den ikke finnes får vi -1.
+
+I moderne JavaScript vil dere lære mer om .filter, .find, .findIndex, .some og .every som brukes til å undersøke en array.
+
+const baseArray = [1, 2, 3];
+const includes = baseArray.includes(2); // true
+
+.pop, .push, .shift, .slice:
+
+Disse metodene brukes til å fjerne og legge til elementer i en array. Disse endrer den orginale arrayen.
+
+const baseArray = [1, 2, 3, 4, 5];
+
+// Legger til 50
+// Ny lengde blir 6
+// [1, 2, 3, 4, 5, 50]
+const push = baseArray.push(50); 
+
+// 50 - henter siste element
+// Sitter da igjen med [1, 2, 3, 4, 5]
+const pop = baseArray.pop(); 
+
+// 1 - henter første element
+// Sitter da igjen med [2, 3, 4, 5]
+const shift = baseArray.shift();
+
+// [3, 4] - henter fra og med index 1 til index 3
+// Sitter fortsatt igjen med [2, 3, 4, 5]
+const slice = baseArray.slice(1, 3);
+
+Array.from():
+
+Brukes for å gjøre om til array.
+
+// Gir oss en nodeList som ligner en array, men ikke helt lik
+// Må gjøre om til array for å kunne bruke
+// alle metoder vi har på array
+const liElements = document.querySelectorAll("li")
+const nodeListToArray = Array.from(liElements); // [Array her]
+
+const arrayFrom = Array.from('word'); // [w,o,r,d]
+
+Array.isArray():
+
+Brukes til å sjekke om noe er en array.
+
+const baseArray = [1, 2, 3, 4, 5];
+const isArray = Array.isArray(baseArray); // true
+
+
+Metoder brukt på objekter:
+
+Det finnes en rekke metoder vi kan bruke på objekter, her er noen av de vanligste.
+
+Hente verdier basert på nøkler (key):
+
+const obj = {
+  key: 'value',
+  anotherKey: 1337,
+  nested: {
+    keyOne: true,
+    keyTwo: false,
+  },
+  myFunction() {
+    return "content";
+  },
+};
+
+const myVar = "key"
+const value = obj.key // value
+const valueTwo = obj["key"] // value
+const valueThree = obj[myVar] // value
+const nested = obj.nested.keyOne; // true
+const content = obj.myFunction() // content
+
+Fjerne og legge til verdier;
+
+Vi kan fjerne, endre og legge til verdier i et objekt.
+
+const emptyObj = {}
+emptyObj.myKey = 'myValue';
+emptyObj.myOtherKey = true;
+
+console.log(emptyObj) // {myKey: myValue, myOtherKey: true}
+
+delete emptyObj.myKey
+
+console.log(emptyObj) // {myOtherKey: true}
+
+emptyObj.myOtherKey = 'changeValue';
+
+console.log(emptyObj) // {myOtherKey: "changeValue"}
+
+JSON.stringify():
+
+Kan gjøre et objekt om til string for å skrive det ut / se hva vi har å jobbe med.
+
+const obj = {
+  key: 'value',
+  anotherKey: 1337,
+  nested: {
+    keyOne: true,
+    keyTwo: false,
+  },
+};
+
+const stringify = JSON.stringify(obj); // lager string av objektet
+const parseJson = JSON.parse(stringify); // gjør om til objekt igjen
+
+Object.values():
+
+Brukes for å hente ut alle verdiene i et objekt.
+
+const baseObj = {
+  name: 'Marius Wallin',
+  age: 37,
+  male: true,
+};
+
+const objValues = Object.values(baseObj); // [Marius Wallin, 37, true]
+
+Object.keys():
+
+Brukes til å hente ut alle keys.
+
+const baseObj = {
+  name: 'Marius Wallin',
+  age: 37,
+  male: true,
+};
+
+const objKeys = Object.keys(baseObj); // [name, age, male]
+
+Object.entries():
+
+Brukes til å hente nøkler og tilhørende verdier.
+
+const baseObj = {
+  name: 'Marius Wallin',
+  age: 37,
+  male: true,
+};
+
+// [['name', 'Marius Wallin'], ['age', 37], ['male', true]]
+const objKeysValues = Object.entries(baseObj); 
+
+n
+
+Events:
+
+Events er handlinger som gjøres i nettleseren, som du kan reagere på i koden. For eksempel, noe skal skje når bruker klikker på en knapp.
+
+Event listener:
+For å lytte på endringer eller handlinger, må man bruke .addEventListener på et element.
+
+// Hente element
+let btn = document.querySelector('button');
+
+// 'click' er event vi lytter etter
+btn.addEventListener('click', () => {
+  // Det som skal skje når knappen er trykket
+  console.log('Knapp trykket');
+});
+
+Event handlers:
+Det er en annen måte å lytte til events, annet enn .addEventListener(). Man kan sette attributter rett på elementet i HTML, og lage en funksjon i JS som skal kjøre når noe skjer med elementet i HTML. Disse starter gjerne med on, for eksempel onclick.
+
+let eventHandler = (event) => {
+  event.preventDefault();
+  console.log('Knapp trykket');
+};
+
+// HTML
+<button onclick="eventHandler()">Trykk på meg</button>
+
+// eventuelt kun...
+
+<button onclick="console.log('Knapp trykket')">Trykk på meg</button>
+
+Ulemper med event handlers:
+- JavaScript-kode blir blandet med HTML. Ved større refaktoreringer eller endringer, kan det bli vanskelig å finne event handleren.
+- Hvis HTML-elementet er ferdig lastet før Javascript-koden, kan brukere trykke på elementet uten at noe skjer. Det vil føre til error.
+- Kan kun knytte en handler til et element
+- Kan ikke gjenbruke logikken vi ønsker å bruke når eventet trigges
+
+.preventDefault():
+
+Noen elementer i HTML har handlinger. <form>vil sende inn skjemaet, mens <a>vil sende bruker til linken. Dette kan unngås med .preventDefault(); Vi trenger å vite mer om elementet, og sender inn event som parameter. Dermed setter vi preventDefault på eventet.
+
+// Hente element
+let btn = document.querySelector('button');
+
+// 'click' er event vi lytter etter
+btn.addEventListener('click', (event) => {
+  // Det som skal skje når knappen er trykket
+  event.preventDefault();
+  console.log('Knapp trykket');
+});
+
+target og currentTarget:
+- event.currentTarget peker på elementet event listener er satt på.
+- event.target peker på elementet som trigget eventet/elementet bruker f.eks. trykket på.
+
+Mouse events:
+
+Det er mulig å lytte på brukers datamusbevegelser. onclick er jo en av disse. Det finnes også:
+- dblclick - dobbeltklikk
+- mousemove - fyrer konstant mens datamusen beveger seg så lite som 1px.
+- mouseover - fyrer når datamusen beveger seg inn på elementet, eller barna.
+- mouseout - fyrer når datamusen beveges ut av elementet, eller barna.
+- mouseenter - fyrer når datamusen beveges inn på elementet, men ikke barna.
+- mouseleave - fyr når datamusen beveges ut av elementet, men ikke barna.
+
+Legg merke til at mouseover/mouseout og mouseenter/mouseleave gjør det samme, men en påvirker også barn av elementet.
+
+Keyboard events:
+
+    keypress - ligner på mousemove, fyrer så lenge man trykker på tastaturet, også når man holder en tast inne.
+    keydown - fyrer når tast trykkes ned, og også når tasten holdes nede.
+    keyup - fyrer når tast slippes.
+
+Alle events:https:
+//www.w3schools.com/jsref/dom_obj_event.asp
+
+
+
+Styling i jS:
+
+Det er mulig å sette CSS-styling på HTML-elementer i JavaScript. Ofte gjøres dette i kombinasjon med events som du nettopp har lest om.
+
+Endre en CSS-stil:
+
+// HTML-element
+<button class='btn-save'>Lagre</button>;
+
+// Henter HTML-element
+let saveBtn = document.querySelector('.btn-save');
+
+// Endrer bakgrunnsfargen til sort
+saveBtn.style.backgroundColor = '#000';
+
+.classList:
+
+Vi kan bruke .classList til å legge til .add(), fjerne .remove() eller skru av og på klasser .toggle().
+
+<p class="one two three" id="id">Tekst</p>
+
+const id = document.getElementById("id")
+
+console.log(id.classList) // ["one", "two", "three"]
+
+id.classList.add("four"); // ["one", "two", "three", "four"]
+id.classList.remove("one", "two"); // ["three", "four"]
+
+// Skru av og på en klasse. F.eks når vi skal skjule / vise noe.
+id.classList.toggle("visible"); // ["three", "four", "visible"]
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// Mål: - Kjenne til hva SPA er - Kjenne til hva fordeler med SPA - Kjenne til ulemper med SPA - Kjenne til forskjellen på rammeverk og bibliotek
+
+Når vi snakket om React så snakker vi om å lage Single Page Applications (SPA). Link til spa: https://en.wikipedia.org/wiki/Single-page_application
+
+Hva menes med SPA?
+
+Tradisjonelle webapplikasjoner har en server som mottar en request (forespørsel) via en link eller via et skjema. Denne forespørselen sendes hver gang vi f.eks navigerer eller oppdaterer informasjon via et skjema.
+
+Når vi sender en forespørsel på den "gamle" måten så er det vanlig å få tilbake en ferdig generert HTML.
+
+Når vi lager SPA applikasjoner, blir alt innholdet laget på klienten (i nettleseren) ved hjelp av f.eks React eller Vue. Første gang nettsiden laster så er den i utgangspunktet tom frem til JavaScripten kjøres og lager grensesnittet.
+
+På bildet nedenfor ses tre ulike måter å lage nettsider på. Til venstre er React måten, i midten er den "gamle" måten og til høyre er en nyere form for generering av nettsider. Disse tre skal vi snakke mer om når vi ser på Next.js (som er et rammeverk som gir React superkrefter).
+
+På bildet under viser det mer forenklet hvordan trafikken ser ut på tradisjonelle nettsider vs SPA. I den gule boksen ser vi at en pil er merket med 'AJAX'. Det vil si at vi sender trafikken asynkront uten å gjennomføre en ny "refresh" av nettsiden. Vi får da tilbake innhold som vi kan bruke til å endre grensesnittet uten at vi laster inn nettsiden på nytt.
+
+Hva er kjennetegner SPA?
+- I en SPA så har vi en «applikasjon» som bor i nettleseren hvor vi ikke trenger å oppdater (refreshe) nettsiden under bruk
+- SPA er i utgangspunktet et tomt skall og det er kun en HTML-side uten innhold
+- Alt annet innhold hentes dynamisk i nettleseren med JavaScript.
+- Navigasjon i nettsiden er simulert og fører ikke til en oppdatering av nettsiden
+- Dette dynamiske innholdet hentes via API på serveren
+- Endring på innholdet POSTes tilbake via API til serveren
+- Data leveres som regel i JSON format
+- Denne dataen brukes til å oppdatere DOM
+
+Fordeler med SPA?
+- Kan være veldig raskt da HTML, CSS og JS lastes en gang gjennom applikasjonens levetid, vi "lager" ikke nettsiden hver gang vi gjør en forespørsel. Kun data sendes frem og tilbake.
+- Utviklingen (kan være) er raskere da server og frontend er fristilt.
+- Enklere å debugge da vi har hjelp fra browseren til å debugge.
+- Kan enkelt konverteres til en PWA (Progressive Web App) eller native app da mange bibliotek har samme kodebase.
+- Kan cache lokale endringer i nettleseren.
+- Offline støtte
+
+Ulemper med SPA:
+- Kan være tregere å laste ned da det ofte er et stort rammeverk bundlet inn i koden (JavaScript filen blir stor og må lastes)
+- SEO – da det ikke er gitt av bots og crawlers kjører JS
+- Krever JS for å fungere
+- Kan være økt sikkerhetsrisiko f.eks Cross-Site Scripting (XSS) da alt skjer med JS
+- Kan ha dårligere performance når vi har store applikasjoner og hvor alt skjer i minnet (minne lekkasje når applikasjonen lever over lang tid)
+
+Utfordringer med å utvikle SPA:
+- Når vi skal lage SPA applikasjoner er det en rekke nye konsepter vi må forholde oss til som vi ikke tenker på når vi jobber med vanlig HTML, CSS og JavaScript.
+
+SPA krever håndtering av:
+- State (lagring av informasjon)
+- Navigasjon (vi må styre navigasjonen)
+- Interaksjoner
+
+Vi kan løse de nevnte tingene med vanlig JS også noe jeg mener jeg hørte Netflix endte opp med å gjøre. Utfordringen er at det krever mye mer av deg som utvikler og blir fort mye rot og dårlig ytelse. Krever også gode designpatterns og verktøy for å håndtere kompleksiteten.
+
+Hvilke rammeverk / biblioteker kan vi bruke?
+
+React er en av flere verktøy vi kan bruke til å løse liknende utfordringer, men det finnes flere andre:
+- Angular (utviklet av Google)
+- Vue (utviklet av Evan Vue)
+- Svelte (utviklet av Rich Harris)
+- Alpine JS
+- Astro
+- (JQuery)
+
+Rammeverk vs biblioteker:
+
+Som en side-note så går det et skille mellom rammeverk og biblioteker. I bunn og grunn handler det om å bruke kode noen andre har laget for å bli mer effektiv.
+- Bibliotek kan beskrives som Ikea. Du har et hus, men trenger litt hjelp til inventaret (ønsker ikke å lage alt sammen selv). Du har full kontroll på hva du vil velge innen Ikea sine rammer. I React (som er et bibliotek) er du frier til hvordan du lager koden, plugger den inn og hva du bruker.
+- Et rammeverk derimot er en ferdig husmodell med tegninger på hvor ting skal være og et mer begrenset valg av alternativer. Du har ikke like god fleksibilitet, men får god støtte på veien (opinionated). I Vue følger du Vue sin blueprint og struktur. Vue gjør en del "magi" for deg når du følger oppskriften.
+
+Teknisk sett har du ganske frie tøyler med bibliotek, mens med rammeverk så følger et sett av beste praksiser og et sett av verktøy som du kan bruke på de ulike plassene.
+</script>
+</body>
+</html>

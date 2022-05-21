@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+/* Mål:
+- Overordnet kjenne til css animasjoner
+- Kjenne til hvordan bruke keyframes */
+
+Ofte brukes biblioteker til å lage animasjoner da de som regel har bedre ytelse, tilpasninger, ferdige kodesnutter m.m. Likevel er det viktig å kjenne til hvordan lage en animasjon med vanlig css.
+
+html-element {
+  animation: animation-name duration timing-function (ease) delay iteration direction fill-mode 
+}
+
+@keyframes animation-name { }
+
+Parameterne for animation er selvforklarende bortsett fra 'fill-mode'.
+
+'fill-mode': når antall iterasjoner (antall ganger animasjonen skal spilles) er fullført kan vi beholde designet slik det var i siste frame eller returnere tilbake designet vi hadde før animasjonen startet (default).
+
+Hvordan lage en animasjon:
+
+Bruker % til å spesifisere når i animasjonen noe skal skje. Hvor 0% er starten av tidslinjen og 100% er slutten. Kan også bruke "from" "to" som er 0% og 100%. De fleste elementer kan animeres.
+
+/* Bruker @keyframes _navn_ til å lage en animasjon */
+/* Animasjonen under pulserer da vi på 0, 80 og 100% gjør elementet
+usynlig */
+@keyframes pulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+Kodeeksempel:
+
+Her er et eksempel på en animasjon som for tre sirkler til å pulsere.
+
+/* Bruker en animasjon kalt pulse, animation: pulse */
+
+/* Animasjonen varer 1.5s og repeteres evig (infinite) */
+
+/* ease-in-out vil si at animasjonen starter sakte, øker hastigheten og 
+avslutter sakte */
+
+/* both vil si at den beholder formen sin hele veien */
+
+.spinner .dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: #ccc;
+  border-radius: 100%;
+  animation: pulse 1.5s infinite ease-in-out both;
+}
+
+/* første sirkel skal starte etter 100ms */
+.spinner .dot1 {
+  animation-delay: 0.1s;
+}
+
+/* andre sirkel skal starte etter 200ms */
+.spinner .dot2 {
+  animation-delay: 0.2s;
+}
+
+/* andre sirkel skal starte etter 300ms */
+.spinner .dot3 {
+  animation-delay: 0.3s;
+}
+
+/* På 0%, 80% og 100% skal sirkelen være usynlig */
+/* På 40% skal den være full størrelse */
+/* Det gir en pulserende effekt */
+@keyframes pulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+Link til kode: https://n26fn.csb.app/
+samme link i code sandbox: https://codesandbox.io/s/css-animasjoner-n26fn?from-embed
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/animation
+</style>
+</head>
+<body>
+    
+</body>
+</html>

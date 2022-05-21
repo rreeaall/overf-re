@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- Mål:
+- Overordnet kjenne til de vanligste attributtene til linker
+- Overordnet kjenne til de vanligste attributtene til andre HTML elementer
+- Kjenne til hvordan bruke attributter -->
+
+I tillegg til selve HTML-taggen finnes det en rekke attributter som de ulike HTML-taggene kan bruke. En av de vanligste er attributter brukt på linker. Eksempler på bruk av disse kan ses i koden nedenfor:
+
+Eksempler på bruk av anker attributter:
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anchors</title>
+  </head>
+  <body>
+    <!-- Target -->
+    <!--
+  _self: siden laster i nåværende fane (Default)
+  _blank: som regel åpnes en ny tab i nettleseren
+  -->
+
+    <!-- Ekstern link -->
+    <a href="https://www.url.com">
+      Url
+    </a>
+
+    <!-- Intern link -->
+    <a href="/home">
+      Home
+    </a>
+
+    <!-- Til et element med "#id" på siden -->
+    <a href="#top">
+      To top
+    </a>
+    
+    <!-- Benytter nettleserens sin e-post håndtering -->
+    <a href="mailto:nowhere@test.org">Send email to nowhere</a>
+
+    <!-- Benytter nettleserens sin telefonhåndtering -->
+    <a href="tel:+4700000000">+47 00 00 00 00</a>
+
+    <!-- Benytter nettleserens sin filhåndtering -->
+    <a href="file.txt">
+      File
+    </a>
+
+    <!-- Referer informasjon - styrer hva slags informasjon 
+    som sendes med forespørselen (request) -->
+    <a ref
+      href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy"
+      rel="noreferrer"
+    >
+      Referer information</a
+    >
+  </body>
+</html>
+
+Eksempler på bruk av generelle HTML-attributter:
+
+I tillegg har vi en rekke andre attributter som brukes på andre HTML-tagger. De vanligste der er id="" og class="" for lettere kunne hente et HTML element eller stilsette det.
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attributes</title>
+  </head>
+  <body>
+    <p class="my_class">Navn på klassen brukt til stilsetting eller JS</p>
+    <p id="my_id">
+      Navn på ID for stilsetting eller JS. Brukes på "hovedelementer"
+    </p>
+    <!-- Custom attr -->
+    <p data-custom="value">
+      Kan hente ut [data] attr og gi attributten data via f.eks JS. 
+      Brukes ofte til testing for lettere å hente det som skal testes.
+    </p>
+    <p contenteditable="true">Gjør HTML-elementet redigerbart</p>
+    <img src="" alt="Image alternative text" />
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes"
+      >Oversikt over alle mulig attributes</a
+    >
+  </body>
+</html>
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes
+
+</body>
+</html>

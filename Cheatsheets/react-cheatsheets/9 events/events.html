@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva komponenter onClick - Kjenne til hva komponenter onSubmit - Kjenne til hva komponenter onChange
+
+På samme måte som vi kan lytte til events i JavaScript kan vi også det i React. Her viser jeg hvordan vi bruker noen av de vanligste eventene. Hvis skal se mer på onSubmit og onChange seinere, men her får dere en rask introduksjon.
+
+onClick:
+
+I dette eksempelet bruker vi en vanlig knapp som trigger en funksjon handleClick
+
+export default function ClickEvent() {
+  function handleClick(e) {
+    // Skriver clicked i consolen ved klikk på knappen
+    console.log("Clicked")
+  }
+
+  return <button onClick={handleClick}>Click me</button>;
+};
+
+I dette eksempelet peker vi ikke direkte på handleClick da vi trenger å sende med en verdi i tillegg.
+
+export default function ClickEventWithValue() {
+  // Genererer et random tall
+  const id = Math.floor(Math.random() * 10);
+
+  function handleClick(e, id) {
+    console.log("Clicked", id); // skriver clicked TALLVERDI i consolen
+  }
+
+  // I onClick metoden lages en arrowFunksjon (callback-funksjon) som trigges
+  // Forskjellen fra over er at jeg sender med noen ekstra verdier
+  // Første parameter er selve eventet (clickEvent). 
+  // Neste parameter er i dette tilfellet id
+  return <button onClick={(e) => handleClick(e, id)}>Click me</button>
+};
+
+Gjør vi det på denne måten trigges funksjonen med en gang uten at vi har trykket på knappen. Det er ikke ønsket måte å trigge en funksjon på.
+
+export default function ClickEventWithValue() {
+  const id = Math.floor(Math.random() * 10);
+  function handleClick(e, id) {
+    console.log("Clicked", id);
+  }
+  // Trigges uten at vi har trykket på knappen
+  return <button onClick={handleClick(id)}>Click me</button>;
+};
+
+onChange:
+
+Dette eventet brukes som regel til å lytte til endringer i input eller dropdowns. I eksempelet nedenfor lytter vi til endringer som skjer når vi skriver i inputboksen.
+
+export default function ChangeEvent() {
+  function handleChange(event) {
+    // event.target.value gir oss verdien som er i inputboksen
+    console.log("Changed", event.target.value);
+  }
+
+  // Hver gang vi skriver en ny verdi vil vi console.log() det som står i inputen
+  return <input type="text" onChange={handleChange} />;
+};
+
+Hvis vi skriver ordet skole vil vi i eksempelet over få ut dette i consolen:
+
+// "Changed" s
+// "Changed" sk
+// "Changed" sko
+// "Changed" skol
+// "Changed" skole
+
+onSubmit:
+
+Når vi skal sende data bruker vi skjema og som regel onSubmit event på dette skjema. Det gjør at vi kan fange opp og styre hva som skal skje når vi submitter (sender) skjema.
+
+For å repetere vil preventDefault gjøre at nettleseren sin "vanlig" måte å reagere på ikke skjer:
+- Det å trykke på en link vil som regel sende oss til en ny side i nettelseren
+- Det å submitte et skjema vil medføre en refresh
+
+export default function SubmitEvent() {
+  function handleSubmit(event) {
+    // Forhindrer refresh av nettsiden
+    event.preventDefault();
+    // Her får jeg ut alle barna til skjema (kun for demo)
+    console.log("Submitted", event.currentTarget.children);
+  }
+
+  // onSubmit trigges når vi trykker på knapp av type="submit"
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" />
+      {/* Trigger submit av skjema */}
+      <button type="submit">Send</button>
+    </form>
+  );
+};
+
+</script>
+</body>
+</html>

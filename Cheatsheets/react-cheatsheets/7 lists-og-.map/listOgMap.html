@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til array.map() - Kjenne til bruk av key - Kjenne til hvordan bruke index i array.map()
+
+Når vi skal skrive ut innholdet fra lister bruker vi array.map() og ikke "for loop".
+
+.map:
+
+Under ser du hvordan vi kan skrive ut en liste med betalingsløsninger.
+
+const paymentSolutions = ['Visa', 'MasterCard', 'Vipps']
+
+export default function PaymentSolutionList() {
+  return(
+    <ul>
+      {paymentSolutions.map(solution => <li>{solution}</li>)}
+    </ul>
+  )
+}
+
+Bruk av key:
+
+React krever at vi gir listeelementet en key. Keyen gjør React raskere samt at vi ikke får ikke console feil. React klager om vi ikke oppfyller dette kriteriet.
+
+const paymentSolutions = ['Visa', 'MasterCard', 'Vipps']
+
+export default function PaymentSolutionList() {
+  return(
+    <ul>
+      {paymentSolutions.map(solution => <li key={solution}>{solution}</li>)}
+    </ul>
+  )
+}
+
+key må være unik og ikke indexen til listeverdien. Grunnen til det er at React mister oversikt når vi f.eks sletter en listeverdi eller to listeverdier bytter plass. React bruker keyen til å identifisere hva som har blitt endret slik at den raskere kan oppdatere listen (ex på remove).
+
+I eksempelet nedenfor sender jeg inn en liste med verdier som prop. Denne kan jeg hente igjen i StudentList hvor jeg kan skrive ut verdiene fra denne listen.
+
+// components/School.js
+
+import StudentList from './StudentList.js'
+
+export default function School() {
+  // Sender en prop med navn students. Den kan hentes i StudentList med props.students
+  return (
+    <StudentList
+        students={[
+          { id: 1, name: "Marius" },
+          { id: 2, name: "Hans" }
+        ]}
+      />
+  )
+}
+
+// components/StudentList.js
+
+// Deconstructer students fra props.students
+export default function StudentList({ students }) {
+  return (
+    <>
+      <h1>Students</h1>
+      <ul>
+        {/* Bruker students.map() for å skrive ut verdiene */}
+        {students.map((student) => (
+          <li key={student.id}>{student.name}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+Hente index:
+
+Under viser jeg hvordan vi kan få indexen til listeverdien. Hvis vi i listen med studenter vet at flere kan ha samme navn, kan vi bruke den til å lage en unik kombinasjon.
+
+// components/StudentList.js
+
+// Deconstructer students fra props.students
+export default function StudentList({ students }) {
+  return (
+    <>
+      <h1>Students</h1>
+      <ul>
+        {/* Bruker students.map() for å skrive ut verdiene */}
+        {/* Legg merke til at index er andre verdi */}
+        {/* Første verdi er alltid selve listeverdien */}
+        {students.map((student, index) => (
+          <li key={`${student.name}-${index}`}>
+            {student.name} - {index}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+</script>
+</body>
+</html>

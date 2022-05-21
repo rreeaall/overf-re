@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+
+// Mål: - Lære hvordan bruke DOM - Lære hvordan lage DOM-elementer med JavaScript - Lære hvordan bruke lage stiler med JavaScript - Lære hvordan bruke eventer i JavaScript
+
+Kode demo: https://f53wy.csb.app/
+same link i code sandbox: https://codesandbox.io/s/progress-uin-2022-f53wy?from-embed
+
+HTML:
+
+Det første vi må gjøre er å sette opp HTMLen slik at vi kan begynne å bruke JavaScript. I HTMLen under har vi laget en <ul></ul> med id="wrapper". Det gjør det enkelt å få tilgang til dette elementet via JavaScript.
+
+Har i tillegg knyttet JavaScript-filen til HTMLen via <script src="src/index.js"></script>:
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <ul id="wrapper"></ul>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>
+
+JavaScript:
+
+Hente ut elementer og lage variabler:
+
+Henter ut HTMLen vi trenger tilgang til. Det kan vi gjøre med f.eks .getElementById(), .querySelector() eller .querySelectorAll().
+
+// Henter ut wrapper og knytter den til en variabel
+const wrapper = document.getElementById("wrapper");
+
+Det neste er å lage setningen som brukes til å lage boksene vist i demoen.
+
+const sentence = "Lærer å bruke JavaScript på HIOF";
+
+// Splitter opp setningen basert på mellomrom med .split(" ")
+const words = sentence.split(" ");
+
+Hardkoder deretter stiler. Dette er ikke beste praksis, men for demoen sin skyld viser jeg hvordan vi kan bruke disse til å gi HTML form og farge.
+
+const style =
+  "display: flex; justify-content: center; align-items: center; max-width: 500px; width: 100%; margin: 10px auto; list-style: none; border: 1px solid #ccc; height: 50px; box-sizing: border-box;";
+
+const defaultButtonStyle =
+  "max-width: 500px; width: 100%; margin: 0 auto; display: block; padding: 1rem; border: none; outline: none; box-sizing: border-box; color: black;";
+
+Lage HTML med JavaScript:
+Neste steg blir å lage HTMLen vi trenger. Starter med listeelementene. Til det brukes .createElement, appenChild, innerHTML, cssText og forEach.
+
+const sentence = "Lærer å bruke JavaScript på HIOF";
+const words = sentence.split(" ");
+const style =
+  "display: flex; justify-content: center; align-items: center; max-width: 500px; width: 100%; margin: 10px auto; list-style: none; border: 1px solid #ccc; height: 50px; box-sizing: border-box;";
+
+const createListElements = () => {
+  words.forEach((word) => {
+    // Lager HTML-elementet
+    const li = document.createElement('li');
+    // Knytter tekst til elementet
+    li.innerHTML = word;
+    // Gir elementet styling
+    li.style.cssText = style;
+    // Knytter elementet til wrapper, <ul> vår
+    wrapper.appendChild(li);
+  });
+};
+
+Vi kan gjøre tilsvarende med next knappen.
+
+const createNextButton = () => {
+  const btn = document.createElement("button");
+  
+  // Kunne også brukt innerHTML
+  btn.textContent = "Next";
+  
+  // Setter en statisk stil med JavaScript
+  // Bruker .cssText som gjør det mulig å bruke stilen vi laget i starten
+  btn.style.cssText = defaultButtonStyle;
+  
+  // Legger knappen etter wrapperelementet
+  // Gir oss denne HTMLen <ul id="wrapper">...</ul><button></button>
+  wrapper.insertAdjacentElement("afterend", btn);
+};
+
+Lytte til klikk på knapp og trigge nødvendig logikk:
+
+Nå HTMLen er på plass kan vi lytte til klikk på next knappen. Bruker da .addEventListener og click-event. Lager en funksjon til å løse dette.
+
+const addBtnListener = () => {
+  
+  // Henter knappen
+  const btn = document.querySelector("button");
+
+  // Lytter til "klikk" på knappen 
+  // Ved klikk trigges handleClick funksjonen
+  btn.addEventListener("click", handleClick);
+};
+
+  // Under ser du HTMLen vi laget med JavaScript
+  <ul id="wrapper">
+  <li>Lære</li>
+  <li>å</li>
+  <li>bruke</li>
+  ...
+  </ul>
+  <button>Next</button>
+
+handleClick:
+
+handleClick brukes til å oppdatere grensesnittet når vi trykker på next. Klikke på knappen skal sørge for at:
+
+    teksten på next endrer seg til Steg X eller Done
+    bakgrunnsfargen på li endrer seg
+
+For å løse dette må vi vite hvor mange ganger vi har trykket på next. Lager en variabel for å holde på denne informasjonen.
+
+let current = 0;
+
+const handleClick = (e) => {
+
+  // Bruker .children til å hente barna til ul med id=wrapper
+  // Får tilgang til li nummer 1 første gang, li nummer 2 andre gang o.s.v
+  const currentChild = wrapper.children[current];
+
+  // Funksjon brukt til å oppdatere current og tekst på knappen
+  updateProgressBar();
+
+  // Endrer bakgrunnsfargen på li, bruker hsl til å endre kontrast
+  currentChild.style.backgroundColor = `hsl(105, 51%, ${80 / current + 20}%)`;
+};
+
+Oppdatere progressen:
+For at koden over skal virke må vi lage updateProgressBar.
+
+// oppdaterer knappen med rett style og tekst
+const updateBtn = () => {
+  // henter "next" knappen
+  const btn = document.querySelector("button");
+ 
+  // sjekker om det er siste ord
+  if (current === words.length) {
+    btn.textContent = `Done`;
+    btn.style.backgroundColor = "green";
+    btn.disabled = true;
+  } else {
+    btn.textContent = `Step ${current}`;
+  }
+};
+
+const updateProgressBar = () => {
+  // Øker current for å oppdatere hvilken <li> vi skal style
+  current += 1;
+  // Trigger funksjonen over
+  updateBtn();
+};
+
+Hele koden:
+Link av codesandbox for hele koden: https://codesandbox.io/s/progress-uin-2022-f53wy
+
+Og under:
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <ul id="wrapper"></ul>
+
+    <script src="src/index.js"></script>
+  </body>
+</html>
+
+import "./styles.css";
+
+const wrapper = document.getElementById("wrapper");
+const sentence = "Lærer å bruke JavaScript på HIOF";
+const words = sentence.split(" ");
+const style =
+  "display: flex; justify-content: center; align-items: center; max-width: 500px; width: 100%; margin: 10px auto; list-style: none; border: 1px solid #ccc; height: 50px; box-sizing: border-box;";
+const defaultButtonStyle =
+  "max-width: 500px; width: 100%; margin: 0 auto; display: block; padding: 1rem; border: none; outline: none; box-sizing: border-box; color: black;";
+
+let current = 0;
+
+const createListElements = () => {
+  words.forEach((word) => {
+    const li = document.createElement("li");
+    li.innerHTML = word;
+    li.style.cssText = style;
+    wrapper.appendChild(li);
+  });
+};
+
+const createNextButton = () => {
+  const btn = document.createElement("button");
+  btn.textContent = "Next";
+  btn.style.cssText = defaultButtonStyle;
+  wrapper.insertAdjacentElement("afterend", btn);
+};
+
+const updateBtn = () => {
+  const btn = document.querySelector("button");
+  if (current === words.length) {
+    btn.textContent = `Done`;
+    btn.style.backgroundColor = "green";
+    btn.disabled = true;
+  } else {
+    btn.textContent = `Step ${current}`;
+  }
+};
+
+const updateProgressBar = () => {
+  current += 1;
+  updateBtn();
+};
+
+const handleClick = () => {
+  const currentChild = wrapper.children[current];
+  updateProgressBar();
+  currentChild.style.backgroundColor = `hsl(105, 51%, ${80 / current + 20}%)`;
+};
+
+const addBtnListener = () => {
+  const btn = document.querySelector("button");
+  btn.addEventListener("click", handleClick);
+};
+
+// Starter applikasjonen med å lage liste, knapp og lytte til click
+createListElements();
+createNextButton();
+addBtnListener();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til index route - Kjenne til no-match route
+
+Index Route:
+
+Vi gjør disse endringene i koden vår.
+- Bytter path='/' til path='hjem' i App
+- Bytter to="/" til to="/hjem" i Navigation
+
+Ved å gjøre disse endringen vet ikke React Router hva som skal vises på forsiden da vi ikke har noen path='/'. React vet ikke hvilken komponent som skal brukes på / da det ikke er definert i Routes. 
+
+Hvis vi likevel vil vise noe på / må vi bruke en såkalt index route. Ved å bruke index sier vi til React at både / og path="hjem" skal bruke Home. Vi skal se flere eksempler på bruk av denne.
+
+// App.js
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          {/* Legger til index som sier bruk Home på / */}
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          <Route path="om" element={<About />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+import { NavLink } from "react-router-dom";
+
+export default function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <NavLink to="/hjem">
+            Hjem
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/om" style={linkStyle}>
+            Om
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+index route knyttes til sin parent path. I koden under vil index som ligger under path="products" bruke Home. Det vil si at Home i dette tilfellet vises når vi går til /, /hjem og /products.
+
+// App.js
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          {/* Legger til index som sier bruk Home på / */}
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          <Route path="om" element={<About />} />
+          <Route path="products">
+            {/* Legger til index som sier bruk Home på /products */}
+            <Route index element={<Home />} />
+          </Route>
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+No Math Route:
+
+404 er en feilkode vi får når vi navigerer til en nettadresse som ikke finnes, som f.eks her. Da det hender at ulike sider ikke eksisterer, er det viktig å gi brukeren en hensiktsmessige feilmelding når de navigerer til slike sider.
+
+I vår applikasjon kan man navigere til /, hjem og om. Om noen prøver å navigere til dashboard vises en tom side, da siden ikke finnes.
+
+Denne siden bør da gi en feilmelding til brukeren. Lager først en komponent NoMatch som vi kan bruke på sider som ikke finnes.
+
+// NoMatch.js
+
+export default function NoMatch() {
+  return <h1>404 - Fant ikke siden du leter etter</h1>;
+}
+
+Setter deretter opp React Router til å håndtere sider som ikke finnes. Vi bruker path='*' til å fange all navigasjon som ikke har blitt håndtert av en annen Route.
+
+// App.js
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="hjem" element={<Home />} />
+          <Route path="om" element={<About />} />
+          {/* '*' vil si fang alt som ikke har blitt trigget av /, 
+          hjem eller om og bruk NoMatch til å vise innhold */}
+          <Route path="*" element={<NoMatch />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+Hvis vi nå navigerer til dashboard vil brukeren se meldingen 404 - Fant ikke siden du leter etter.
+</script>
+</body>
+</html>

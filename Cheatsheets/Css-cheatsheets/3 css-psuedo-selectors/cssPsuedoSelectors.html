@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+/* Mål: 
+- Kjenne til ulike måter å hente HTML-elementer
+- Kjenne til hvordan hente linker (a)
+- Kjenne til hvordan hente basert på rekkefølgen til HTMLen
+- Kjenne til hvordan hente ut input basert på modus */
+
+Pseudo selectorer brukes når vi vil være veldig spesifikke på hvilke elementer vi vil stilsette. 
+
+Hvilke pseudo selectorer er vanlig å bruke?
+
+På jobb har jeg brukt alle som nevnes nedenfor. Det finnes også flere og nye dukker opp, men kan du disse er det et godt utgangspunkt. Vi kan bruke disse i kombinasjon, men under viser jeg dem hver for seg.
+
+Anker (a) pseudo selectors:
+/* Når vi tar musepekerne over et element (a, anchor) i dette tilfelle */
+a:hover {
+  text-decoration: underline;
+}
+
+/* Når vi har besøkt en link */
+a:visited {
+  color: orange;
+}
+
+/* Alle linker som har en href-attr */
+a:link {
+  color: teal;
+}
+
+/* Aktiv link */
+a:active {
+  color: purple;
+}
+
+Html: 
+<ul class="pseudo">
+  <li>Bruker :first-child</li>
+  <li>Bold da jeg bruker :nth-child(2n)</li>
+  <li>Lorem ipsum dolor</li>
+  <li>Bold da jeg bruker :nth-child(2n)</li>
+  <li>Bruker :last child</li>
+</ul>
+
+css av html-en:
+
+/* Første barn av en gitt type */
+ul li:first-child {
+  color: tan;
+}
+
+/* Siste barn av en gitt type */
+ul li:last-child {
+  color: teal;
+}
+
+/* Alle partall av en gitt type */
+ul li:nth-child(2n) {
+  font-weight: bold;
+}
+
+Hente ut elementer basert på type:
+
+På bildet under ser du resultatet av stylingen basert på "X-of-type" (ingen bildet).
+html:
+<article class="of-type">
+  <p>First of type (:nth-of-type(odd) bold)</p>
+  <a href="">En link</a>
+  <a href="">En link</a>
+  <p>Second of type (ingen styling)</p>
+  <p>Third of type (:nth-of-type(odd) bold)</p>
+  <p>Fourth of type (ingen styling)</p>
+</article>
+
+css av html-en:
+/* Første element av en gitt type */
+.of-type p:first-of-type {
+  color: red;
+}
+
+/* Alle oddetall elementer av en gitt type */
+.of-type p:nth-of-type(odd) {
+  font-weight: bold;
+}
+ 
+Hente ut elementer i en tekst:
+Vi kan bruke CSS til å hente ut ulike elementer av en tekst. På bildet under ser du resultatet av stylingen.
+
+html: 
+<p class="first_letter first_line selected">
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio quidem
+  maiores incidunt eveniet quisquam saepe, eum praesentium delectus rerum.
+  Accusamus pariatur dolores corrupti voluptate ea! Reprehenderit iste ex
+  recusandae eligendi!Lorem ipsum dolor sit amet consectetur adipisicing
+  elit. Optio quidem maiores incidunt eveniet quisquam saepe, eum
+  praesentium delectus rerum. Accusamus pariatur dolores corrupti
+  voluptate ea! Reprehenderit iste ex recusandae eligendi!
+</p>
+
+css av html-en:
+/* Første linje i en tekst */
+.first_line::first-line {
+  text-decoration: underline;
+}
+
+/* Første bokstav i en tekst */
+.first_letter:first-letter {
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+Input pseudo-selectors (modus):
+
+Input-elementer har ulike "moduser". Det kan vi benytte oss av når vi skal style en <input />. På bildet under ser du resultatet av stylingen (ingen bildet).
+
+html:
+<input type="text" required /><span>input:required</span><br />
+<input type="text" disabled /><span>input:disabled</span><br />
+<input type="checkbox" checked /><span>input:checked</span><br />
+<input type="text" autofocus /><span>input:focus</span><br />
+<input type="number" /><span>input:not([type="text"])</span><br />
+
+css av html-en:
+/* Alle inputfelter som er required */
+input:required {
+  border: 5px solid green;
+  margin-bottom: 10px;
+}
+
+/* Alle inputfelter som er disabled */
+input:disabled {
+  background-color: #ccc;
+}
+
+/* Alle sjekkbokser som er huket av deretter første span */
+input:checked + span {
+  color: teal;
+}
+
+/* Alle input elementer som har focus deretter første span */
+input:focus + span {
+  color: purple;
+}
+
+/* Alle input elementer som ikke er av typen text deretter første span */
+input:not([type="text"]) + span {
+  font-weight: bold;
+}
+
+Before og after pseudo selectors:
+
+Before og after brukes når vi vil legge til noe før eller etter et HTML-element. På bildet under ser du resultatet av stylingen(ingen bildet).
+
+html:
+<p class="before_after">:before og :after</p>
+
+css av html-en:
+.before_after {
+  padding: 20px;
+  font-weight: bold;
+  color: #000;
+  font-size: 20px;
+  position: relative;
+  display: inline-block;
+  border: 1px solid blue;
+}
+
+/* Kan legge til og/eller style elementer som kommer FØR selve innholdet */
+.before_after:before {
+  /* Må ha med content for at dette skal virke */
+  content: "before element";
+  font-size: 15px;
+  font-weight: 300;
+  margin-right: 20px;
+}
+
+/* Kan legge til og/eller style elementer som kommer ETTER selve innholdet */
+.before_after:after {
+  content: "after element og position absolute";
+  white-space: nowrap;
+  position: absolute;
+  top: 40px;
+  left: 100%;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+
+Andre selectorer:
+Det finnes også andre selector som er greit å kjenne til.
+
+html:
+<p>Under velges et element som ikke har innhold via :empty</p>
+<section></section>
+
+css av html-en:
+/* Alle seksjoner som ikke har tekst */
+section:empty {
+  border: 5px solid #000;
+  padding: 20px;
+  margin-top: 100px;
+}
+
+/* Fargen vi får når vi markerer tekst */
+.selected::selection {
+  color: orange;
+}
+
+link av dette: https://0l82e.csb.app/#
+
+samme link i codesandbox: https://codesandbox.io/s/css-pseudo-0l82e?from-embed
+
+dokumentasjon:
+MDN Psuedo classes:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
+
+MDN Psuedo elements
+https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
+
+MDN Sibling selector
+https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator
+
+MDN General sibling selector:
+https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator
+
+MDN Child selector:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator
+
+MDN decendant selector:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator
+    </style>
+</head>
+<body>
+    
+</body>
+</html>

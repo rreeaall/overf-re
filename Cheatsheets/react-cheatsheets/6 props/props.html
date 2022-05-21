@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva props er - Kjenne til hvordan bruke props til å kommunisere - Kjenne til hvordan deconstructe props - Kjenne til parent/child forhold - Kjenne til props-drilling - Kjenne til props.children
+
+Når vi lager komponenter vil vi ofte at de komponentene skal snakke med hverandre. Vi ønsker å sende data til komponenten fra en annen. Bruk av props gjør at vi kan lage dynamiske komponenter.
+
+Props:
+
+Props brukes til å sende data fra en komponent til en annen. Viktig å kjenne til med props er at dataen som en komponent mottar ikke kan endres i komponenten som får den, kan kun lese dataen. Vi sier at trafikken går fra en parent til en child og ikke tilbake igjen. Det er ingen grense for hvor mange props som kan sendes fra en komponent til en annen.
+
+Det er flere måter å brukes props på. Den enkleste (og minst vanlige) er å bruke props parameter som er et reservert nøkkelord i React. Når vi bruker props får vi tilgang til alle verdiene som har blitt sendt til komponenten.
+
+// components/School.js
+
+// importerer Student fra samme mappe som School slik at vi kan bruke den
+import Student from './Student'
+
+export default function School() {
+  // sender to props (name og age). Disse kan vi da bruke i Student
+  return <Student name={"Test"} age={22} />
+};
+
+// components/Student.js
+
+// Bruker et reservert nøkkelord i React kalt props
+// Props blir i dette tilfelle et objekt som ser slik ut 
+// {name: 'Test', age: 22}
+
+export default function Student(props) {
+  return (
+    <>
+      {/* Vi kan bruke "key" (nøklene) for å hente ut selve verdien */}
+      {/* Skriver ut My name is Test */}
+      <h1>My name is {props.name}</h1>
+      {/* Skriver ut My age is 22 */}
+      <p>My age is {props.age}</p>
+    </>
+  );
+}
+
+Parent - child:
+
+"Kommunikasjon mellom komponenter kan kun gå fra parent til child (nedover i hierarkiet)".  
+
+Når vi skal kommunisere mellom komponenter kan det kun gjøres fra parent til child og via props. Under er et eksempel på hvordan en Parent bruker en Child og sender props (data) videre:
+
+const data = [{ id: 1, name: "Lars", age:"22" }];
+
+export default function Parent() {
+  return <Child data={data} />
+}
+
+Overordnet kommuniseres det mellom komponenter:
+- Via props fra parent til child
+- Via callbacks (funksjoner) fra child til parent
+- På tvers av komponenter
+    - via en av de nevnte
+    - Redux (ikke fokus i kurset)
+    - React Context API (ikke fokus i kurset)
+
+
+Kommunikasjon via props:
+
+I dette eksempelet ser du hvordan vi kommuniserer fra parent til child via props
+
+// components/Child.js
+
+// importerer Child for å kunne bruke den her i Parent
+import Child from './Child'
+
+export default function Parent() {
+  // Bruker Child komponenten. Sender en prop name med verdien Marius
+  return (
+    <Child name="Marius" />
+  )
+}
+
+// Deconstruct props basert på variabelnavnet (props.name)
+export default function Child({ name }) {
+  // Skriver ut name som ble sendt fra Parent. name = Marius
+  return <h1>My name is {name}</h1>
+}
+
+
+Kommunikasjon via callbacks (funksjoner):
+
+I dette eksempelet får vi en funksjon som prop. Det fungerer på samme måte som over, men forskjellen er at vi kan trigge funksjonen i Child. Funksjonen blir kjørt i Parent hvor den bor.
+
+// components/Parent.js
+
+import Child from './Child'
+
+export default function Parent() {
+  // Lager en funksjon som sendes til Child via prop hello
+  const sayHello = () => console.log("Hello");
+  // Child får tilgang til prop.hello og kan bruke denne
+  return <Child hello={sayHello} />
+};
+
+// components/Child.js
+
+// Deconstructer hello fra props.hello
+export default function Child({ hello }) {
+  // Lager en knapp som på klikk trigger hello
+  // Klikket medfører at Hello skrives ut i consolen
+  return <button onClick={hello}>Knapp</button>
+};
+
+
+Props drilling:
+
+Hvis strukturen er enkel kan man fint sende data fra parent til child til child til child etc, men anbefalingen er at du ikke bør sende data mer enn 3 nivåer. Å sende props nedover en kjede kalles "prop drilling".
+
+Jo flere nivåer jo flere steder må koden justeres ved endringer. For å unngå dette kan vi bruke noe som heter Redux (ikke fokus i kurset) eller Context API. Vi skal touche innom Context API seinere i kurset. 
+
+I koden under sender jeg en funksjon fra parent til child og videre ned til GrandChild (props drilling av funksjonen sayHello). sayHello trigges ved å klikke på knappen i GrandChild. Funksjonen blir kjørt i Parent der den bor.
+
+import Child from './Child'
+
+export default function Parent() {
+  const sayHello = () => console.log("Hello");
+  return (
+    <>
+      <h2>Parent</h2>
+      <Child hello={sayHello} />
+    </>
+  );
+};
+
+import GrandChild from './GrandChild'
+
+export default function Child({ hello }) {
+  return (
+    <>
+      <h2>Child</h2>
+      <GrandChild hello={hello} />
+    </>
+  );
+};
+
+export default function GrandChild({ hello }) {
+  return (
+    <>
+      <h2>GrandChild</h2>
+      <button onClick={hello}>Knapp hos GrandChild</button>
+    </>
+  );
+};
+
+Nedenfor ser du et bilde på hvordan props drilling virker. Den gule sirkelen indikerer at vi sender props hele veien ned i treet. Den lilla indikerer at vi gjør en endring langt nede i hierarkiet som "traverserer" tilbake opp til parent.
+Alt tekst
+
+I dette bildet visualiseres det hvordan vi kan løse det hvis vi ikke bruker props-drilling. Da har vi en enhet på utsiden som får med seg alle endringene og sender de til rett plass (Context API eller Redux er eks på dette)
+Alt tekst
+
+
+Props - Children:
+
+I tillegg til props finnes det et annet reservert nøkkelord i React. Dette nøkkelordet heter children.
+
+children brukes når man har en wrapper rundt et sett av komponenter. Kort fortalt brukes children til å vise det som finnes mellom starten <Component> og slutten </Component>. Hva som er mellom spiller ingen rolle. props.children er reservert til dette.
+
+// components/Layout.js
+
+// Deconstructer children fra props.children
+export default function Layout({ children }) {
+  return <div>{children}</div>;
+}
+
+// Uten deconstruction
+export default function Layout(props) {
+  return <div>{props.children}</div>
+}
+
+// components/Parent.js
+
+import Layout from './Layout'
+import SomeComponent from './SomeComponent'
+
+export default function Parent() {
+  // Alt vi plasserer mellom <Layout></Layout> 
+  // får vi tilgang til via props.children i <Layout> (se over)
+  return (
+    <Layout>
+      <h3>Heading</h3>
+      <p>Paragraf</p>
+      {/* Vi kan også ha komponenten her ikke bare HTML */}
+      <SomeComponent age={22} />
+    </Layout>
+  )
+};
+
+</script>
+</body>
+</html>

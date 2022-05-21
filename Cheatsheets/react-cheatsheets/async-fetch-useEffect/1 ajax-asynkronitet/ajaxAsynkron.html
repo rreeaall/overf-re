@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva Ajax er - Kjenne til asynkronitet
+
+Før vi kan jobbe asynkront er det viktig å kjenne til hva som menes med asynkronitet og hvordan JavaScript håndterer asynkrone handlinger.
+Hva menes med asynkront?
+
+Kort fortalt betyr det at noe vi gjør på nettsiden trigger en hendelse som blir ferdig en gang i fremtiden, altså vi får ikke umiddelbart svar tilbake. Vi venter på svaret.
+
+Vi kan tenke på det som en boomerang vi sender ut, venter litt for deretter å få den tilbake igjen. I mellomtiden kan vi gjøre noe annet mens boomerangen gjør sin jobb.
+
+I web-verden kan vi illustrere dette ved f.eks et klikk på «lag rapport» på en nettside. Klikket vil sende en forespørsel (request) til serveren som behandler dataen. I mellomtiden venter vi på svaret (response) før vi kan håndtere den. Hvis dette skjer asynkront "fryser" ikke nettleseren mens rapporten lages, noe som ville vært resultatet om det skjedde synkront.
+
+Asynkront arbeid gjør at vi ikke blokkerer hele "arbeidsflyten". Nettleseren (og brukeren) blir holdt igjen hvis vi introduserer funksjonalitet som blokker hele reisen. Brukeren må da vente på at operasjonen er fullført.
+
+    Nøkkelordet er at vi venter på at noe skal bli klart, før vi kan gjøre noe med det svaret vi får tilbake. I mellomtiden kan du gjøre andre ting.
+
+Eksempler som illustrerer asynkronitet:
+
+1. Pizza:
+
+Du skal spise pizza, men før du kan spise den så må du varme den. Du setter den i ovnen og varmer den i en gitt tid (utfører arbeidet asynkront). I mellomtiden kan du lage salat. Du venter på at pizzaen skal ferdig før du kan spise den.
+
+2. Regne matte:
+
+Du trenger svaret på et heftig mattestykke. Jeg trenger litt tid til å regne ut svaret (asynkront arbeid). I mellomtiden kan du gjøre noe annet mens du venter på svaret fra meg. Du venter på å få svaret på løsningen.
+
+Hva skjer når vi jobber asynkront?
+
+Det skjer en del behind the scenes. For dere som er vant med Java e.l, kan man tenke at det lages flere tråder som håndterer oppgavene.
+
+JavaScript kjører på en tråd, men bruker asynkrone operasjoner til å håndtere flere oppgaver samtidig.
+
+Kort forklart vil synkrone oppgaver havne i en kø hvor oppgavene utføres etter hverandre en og en. Asynkrone oppgaver kommer ikke i denne køen, men havner i en såkalt eventloop som har sin egen kø. Her håndteres disse oppgavene, og det er først når de er ferdig de blir en del av den normale køen.
+
+E6:
+
+Se for deg en E6 med to filer hvor trafikken har normal flyt i det ene filen. Hvis en bil stopper i denne filen, vil den blokkere alle de andre bilene. Ved å ta den ut av filen og over til den andre filen mens den fikses kan trafikken gå som normalt i hovedfilen.
+
+Vi venter på at bilen skal bli reparert før den kan flettes tilbake i hovedfilen.
+
+Anbefaler å se videoen for å få en kort introduksjon, se video: https://www.youtube.com/watch?v=8aGhZQkoFbQ&feature=youtu.be
+
+Ajax:
+
+Når vi skal hente data via f.eks APIer (andre tjenester) i nettleseren kan vi gjøre det synkront eller asynkront, hvor asynkront er foretrukket. Ajax gir oss denne muligheten.
+
+Ajax står for Asynchronous JavaScript And XML. Overordnet brukes Ajax til å kommunisere med en server for å hente eller modifisere data, uten at nettsiden må refreshes. Den gjør en asynkron handling.
+
+Jeg kan med andre ord sende en forespørsel, vente på dataen som kommer tilbake og bruke denne til å oppdatere nettsiden uten at siden gjør en refresh. AJAX brukes i SPA (Single Page Applications) for å oppnå dette.
+
+JSON og XML:
+
+Kort fortalt er det ulike formater på innholdet vi får tilbake fra serveren. Grunnen til at AJAX har XML i seg skyldes at det ble utviklet i 2005 når XML var formatet som ble brukt, fra 2015 har JSON vært standarden. Du kan også få XML, men det er ikke noe jeg har vært innom i min tid som programmerer. Vi skal se mer på JSON seinere i kurset.
+
+Eksempel på JSON:
+
+JSON minner om vanlige objekter i JavaScript
+
+{
+  "glossary": {
+    "title": "example glossary",
+    "GlossDiv": {
+      "title": "S",
+      "GlossList": {
+        "GlossEntry": {
+          "ID": "SGML",
+          "SortAs": "SGML",
+          "GlossTerm": "Standard Generalized Markup Language",
+          "Acronym": "SGML",
+          "Abbrev": "ISO 8879:1986",
+          "GlossDef": {
+            "para": "A meta-markup language, used to create markup languages such as DocBook.",
+            "GlossSeeAlso": ["GML", "XML"]
+          },
+          "GlossSee": "markup"
+        }
+      }
+    }
+  }
+}
+
+</script>
+</body>
+</html>

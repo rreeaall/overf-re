@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til ternary operator i JSX - Kjenne til hvordan bruke if for å vise ulike komponenter - Kjenne til hvordan bruke switch for å vise ulike komponenter
+
+Når vi skal undersøke om gitte krav er oppfylt i React finnes det flere måter å gjøre dette på. Viktig å vite er at vi bruker ternary operators hvis vi skal sjekke en condition inne i return vår (se første eksempel).
+
+Slik fungerer ternary operators: (Under er en liten repetisjon på hvordan operators virker.)
+
+// Boolean operators
+// condition && <p>Yes</p> => Hvis condition er true får vi <p>Yes</p>
+// condition && <p>Yes</p> => Hvis condition er false får vi ikke noe
+// condition || <p>No</p> => Hvis condition er false får vi <p>No</p>
+// condition || <p>No</p> => Hvis condition er true får vi condition
+
+// Ternery operators
+// condition ? <p>Yes</p> : <p>No</p> => Hvis condition er true får vi <p>Yes</p>
+// condition ? <p>Yes</p> : <p>No</p> => Hvis condition er false får vi <p>No</p>
+
+// Kan neste ternery operators (men ikke anbefalt)
+// conditionOne ? <p>Yes</p>: conditionTwo ? <p>Maybe</p> : <p>No</p>
+
+I dette eksempelet sjekker jeg om en verdi som sendes fra 'parent' til 'child' oppfyller gitte krav.
+- Når alderen er 22 eller lavere vises 'condition er false og prop.message: 'FORBUDT' vises'
+- Når alderen er 23 eller høyere vises 'condition er true. Du er gammel nok'
+
+// components/Parent.js
+
+import Child from './Child'
+
+export default function Parent() {
+  return <Child age={22} message="FORBUDT" />;
+};
+
+// components/Child.js
+
+export default function Child({ age, message }) {
+  // Her bruker vi ternary operator for å sjekke condition
+  return (
+    <div>
+      {age > 22 ? (
+        <p>condition er true. Du er gammel nok</p>
+      ) : (
+        <p>condition er false og prop.message: {message} vises</p>
+      )}
+    </div>
+  );
+}
+
+I dette eksempelet viser jeg hvordan vi kan skrive ut flere linjer i en condition. Da må vi bruke 'fragments' som lært i leksjon 5.
+
+// components/Child.js
+
+export default function Child({ age, message }) {
+  return (
+    <div>
+      {age > 22 ? (
+        <>
+          {/* Bruker Fragments (<>) her da vi ikke har noen annen "wrapper" rundt */}
+          <h2>Multiline</h2>
+          <p>condition er true. Du er gammel nok</p>
+        </>
+      ) : (
+        <p>condition er false og prop.message: {message} vises</p>
+      )}
+    </div>
+  );
+}
+
+3 andre måter å bruke conditionals på:
+1. Erstatte innhold med komponenter:
+
+Vi lager to nye komponenter som bor i samme fil som Child.js. Vi trenger ikke å lage egne filer for disse om vi kun skal bruke de i Child komponenten.
+
+Forskjellen her fra tidligere er at vi i condition returnerer en komponent som har kontroll på innholdet. Mange opplever dette som lettere å lese da Child blir mindre verbose (mindre kode og tekst å forholde seg til).
+
+// components/Child.js
+
+const ValidAgeMessage = () => {
+  return (
+    <>
+      <h2>Multiline</h2>
+      <p>condition er true. Du er gammel nok</p>
+    </>
+  );
+};
+
+const NoneValidAgeMessage = ({ message }) => {
+  return <p>condition er false og prop.message: {message} vises</p>;
+};
+
+export default function Child({ age, message }) {
+  return (
+    <div>
+      {age > 22 ? <ValidAgeMessage /> : <NoneValidAgeMessage message={message} />}
+    </div>
+  );
+}
+
+2. Bruke if til å sjekke istedenfor ternary operators:
+
+Her gjør vi som over, men vi bruker en if sjekk for å se om condition oppfylles.
+
+// components/Child.js
+
+const ValidAgeMessage = () => {
+  return (
+    <>
+      <h2>Multiline</h2>
+      <p>condition er true. Du er gammel nok</p>
+    </>
+  );
+};
+
+const NoneValidAgeMessage = ({ message }) => {
+  return <p>condition er false og prop.message: {message} vises</p>;
+};
+
+export default function Child({ age, message }) {
+  if (age > 22) return <ValidAgeMessage />;
+  return <NoneValidAgeMessage message={message} />;
+}
+
+3. Bruke switch istedenfor if eller ternary operators:
+
+Her bruker vi en switch til å styre hvilken komponent som skal vises basert på betingelsen som sjekkes. I dette tilfellet blir Child ganske slank da vi flytter innholdet ut fra Child og inn i egne komponenter.
+
+// components/Child.js
+
+const ValidAgeMessage = () => {
+  return (
+    <>
+      <h2>Multiline</h2>
+      <p>condition er true. Du er gammel nok</p>
+    </>
+  );
+};
+
+const NoneValidAgeMessage = ({ message }) => {
+  return <p>condition er false og prop.message: {message} vises</p>;
+};
+
+const ErrorMessage = () => {
+  return <p>Du må være over 0 år og under 100 år</p>;
+};
+
+export default function Child({ age, message }) {
+  switch (true) {
+    case age === 0 || age > 100:
+      return <ErrorMessage />;
+    case age < 22:
+      return <NoneValidAgeMessage message={message} />;
+    default:
+      return <ValidAgeMessage />;
+  }
+}
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva komponenter er - Kjenne til hvordan en nettside deles opp i komponenter - Kjenne til strukturen/formen på en komponent
+
+Hva er komponenter?
+
+Selve kjernen i React er komponenter. Når vi snakker om nettsider, kan en komponent være Navigation og Footer. De har ansvar for sin del av nettsiden og kan inneholde lite eller mye logikk.
+
+Andre komponenter kan være Card som inneholder visningen av et enkelt produkt i en nettbutikk. Vi kan også ha en komponent som heter Cards som vi bruker når vi skal skrive ut listen med produkter.
+
+Når vi kombinerer Navigation, Footer og Cards så får vi en sammensatt komponent som er starten på en nettside for f.eks produkter.
+
+I bildet nedenfor ser du hvordan en nettside for sko kan se ut og hvordan den igjen kan deles opp i ulike komponenter. Vi har f.eks en komponent for:
+- Søk
+- Navigasjon
+- Breadcrumbs
+- Filter
+- Cards
+- Card
+
+Hvordan ser en komponent ut?
+
+Når vi lager komponenter så starter vi med å lage en vanlig JavaScript fil Component.js. Noen foretrekker å navngi komponenter med stor forbokstav Component.js, andre foretrekker at vi bruker Component.jsx. Det viktigste er at man er konsistent. Uansett er det vanlig å legge alle komponenter i en mappe kalt components.
+
+/components
+  ComponentOne.js
+  ComponentTwo.jsx
+  componentThree.js
+
+Når vi lager komponenter så har den en bestemt form:
+
+// components/ComponentName.js
+
+// Stor forbokstav og en funksjon (vanlig eller arrow)
+// Har en return() hvor innholdet returneres
+function ComponentName() {
+  return()
+};
+
+// components/ComponentName.js
+
+function ComponentName() {
+  // Her (før return) kan vi lage funksjoner og variabler som i vanlig JavaScript
+  const age = 22;
+
+  return();
+};
+
+// components/ComponentName.js
+
+function ComponentName() {
+  const age = 22;
+
+  return (
+    // JSX (som minner om HTML). 
+    // Dynamiske verdier må bruke {}, {dynamiskVerdi}
+    <h1>Age {age}</h1>
+  );
+};
+
+// components/ComponentName.js
+
+// Må eksportere funksjonen for at den skal kunne brukes andre steder
+// Kan importere den med import ComponentName from './components/ComponentName'
+export default function ComponentName() {
+  // Her (før return) kan vi lage funksjoner og variabler som i vanlig JavaScript
+  const age = 22;
+
+  return (
+    // JSX (som minner om HTML). 
+    // Dynamiske verdier må bruke {}, {dynamiskVerdiHer}
+    <h1>Age {age}</h1>
+  );
+};
+
+// components/ComponentName.js
+
+// Kan ta i mot `props` (data) fra andre komponenter
+// Mer om det i neste leksjon
+export default function ComponentName(props) {
+  const age = 22;
+
+  return (
+    <h1>Age {age}</h1>
+  );
+};
+
+Her ser du en komplett, enkel komponent
+
+// components/ComponentName.js
+
+// Eksporterer komponenten slik at den kan brukes andre steder
+// Tar i mot eventuelle props
+export default function ComponentName(props) {
+  // Her (før return) kan vi lage funksjoner og variabler som i vanlig JavaScript
+  const age = 22;
+
+  return (
+    // JSX (som minner om HTML). 
+    // Dynamiske verdier må bruke {}, {dynamiskVerdiHer}
+    <h1>Age {variabel}</h1>
+  );
+};
+
+Her er en alternativ måte å skrive den på
+
+// Alternativt
+const ComponentName = (props) => {
+  // Her (før return) kan vi lage funksjoner og variabler som i vanlig JavaScript
+  const age = 22;
+
+  return (
+    // JSX (som minner om HTML). 
+    // Dynamiske verdier må bruke {}, {dynamiskVerdiHer}
+    <h1>Age {age}</h1>
+  );
+}
+
+// Eksporterer komponenten her
+export default ComponentName;
+
+Hvorfor komponenter?
+- DRY (Do Not Repeat Yourselves ⇒ gjenbruk av kode)
+- Mindre kode på et sted = Økt lesbarhet
+- Dynamisk import som gir raskere lastetid
+- Bedre strukturering av koden
+
+Mer om komponenter:
+I neste leksjon ser vi mer på komponenter og hvordan sette de sammen. I leksjon 10 ser vi på hvordan sette sammen flere komponenter, bruk av lister, bruk av button samt en video.
+
+</script>
+</body>
+</html>

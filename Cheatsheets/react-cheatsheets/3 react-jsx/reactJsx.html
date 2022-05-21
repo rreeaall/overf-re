@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til hva React er - Kjenne til hva JSX er - Kjenne til virtuell DOM (vdom) - Kjenne til hvordan skrive JSX
+
+React - Litt historie:
+
+React er et JavaScript-bibliotek som gjør det lettere å lage interaktive nettsider, håndtere state, håndtere eventer, ytelse, gjenbruke kode m.m. React ble utviklet av Facebook for å gjøre det lettere og raskere å bygge brukergrensesnitt, men også med høyere kvalitet og bedre ytelse.
+
+Et bibliotek som ble mye brukt før er jQuery. jQuery gjør en del vanlige operasjoner enklere grunnet ferdige "oppskrifter", men er ikke så skreddersydd for utvikling av større applikasjoner med de kravene som en moderne nettside (webutvikler) har i dag.
+
+React - JSX:
+
+JavaScript brukes til å påvirke DOMen basert på input, eventer eller ved å lage fjerne/elementer. Når vi jobber med React så skriver vi JavaScript, men vi bruker noe kalt JSX.
+
+JSX (JavaScript eXtension) gjør det mulig å bruke JavaScript på en effektiv måte. JSX blir oversatt til vanlig JavaScript "runtime" (med en gang, må ikke vente til koden er gjort om til "kjørbar" kode slik det gjøres i f.eks. Java / C#), og deretter vanlig HTML.
+
+Da JSX er JavaScript kan vi ikke bruke reserverte ord som class, for, while etc. Derfor heter class=className, for=htmlFor +++.
+
+Koden nedenfor er kun for å illustrere hvordan vi kan lage en komponent så ikke nødvendigvis noe som gir mening på nåværende tidspunkt.
+
+// React komponent som heter Task. Komponenter starter med stor forbokstav
+export default function Task() {
+  // Her kan du skrive vanlig JavaScript
+  const completion = task.completed ? 'complete' : 'incomplete'
+  const handleComplete = (id) => {console.log(id)}
+
+  // Det som returneres her er JSX. Det kan minne om HTML men er JSX (JavaScript)
+  // Alt som er inne i { } er dynamisk innhold (det byttes ut)
+  return (
+    <li className="task">
+      <span className={completion}>
+        {/* Her bruker vi vanlig ternery operator */}
+        {task.completed ? '✓' : '×'}
+      </span>
+      <span className="task-name">{task.name}</span>
+      {/* Her trigger vi en funksjon på klikk */}
+      <button onClick={() => handleComplete(task.id)}>Update status</button>
+    </li>
+  )
+}
+
+
+React - Virtuell Dom (nice to know):
+
+Når vi skriver vanlig JavaScript så påvirker vi HTMLen direkte, DOM. Link til DOM: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
+
+I React endrer vi DOMen via en Virtuell Dom (VDOM), en kopi av den opprinnelige DOMen, men i minnet. Ved å bruke en VDOM så får vi en raskere endring av HTMLen. Det er raskere å endre noe som finnes i minnet enn å endre selve HTMLen direkte.
+
+Når denne VDOM har blitt oppdatert "skjønner" React hvilke endringer som må gjøres på i ekte DOMen. Unngår da å re-rendre hele DOMen men kun de stedene hvor endringen finner sted. I applikasjoner hvor det gjøres mange endringer på en gang så ville det gått utover ytelsen da det å re-rendre (bytte ut) DOM er en krevende prosess.
+
+I bildet nedenfor ser du et eksempel på React til venstre og vanlig HTML til høyre. Når vi gjør endringer i React delen så vil den via VDOM finne riktig element i HTMLen og gjøre endringene.
+</script>    
+</body>
+</html>

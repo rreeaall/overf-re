@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//Mål: - Kjenne til props.children - Kjenne til hvordan Outlet erstatter props.children 
+
+Lage layout uten React Router:
+
+Under ser du hvordan lage en layout uten å bruke React Router. Dette er den vanlige måten å lage en Layout på.
+
+For å gi alle sider lik layout lages en Layout komponent. I Layout brukes .children, som gjør at alt som kommer mellom <Layout>...</Layout> får <main></main> rundt seg.
+
+// Layout.js
+
+export default function Layout(props) {
+  return <main>{props.children}</main>;
+}
+
+Bruker Layout komponenten i About og Home.
+
+// About.js
+
+import Layout from "./Layout";
+
+export default function About() {
+  return (
+    <Layout>
+      <h1>Om</h1>
+    </Layout>
+  );
+}
+
+// Home.js
+
+import Layout from "./Layout";
+
+export default function Home() {
+  return (
+    <Layout>
+      <h1>Forside</h1>
+    </Layout>
+  );
+}
+
+Bruke React Router til å styre Layout:
+
+Når vi bruker React Router er finnes den en annen måte å gi lik layout til alle sider.
+
+Vi kan knytte Layout til en Route slik at den gjelder for alle komponentene våre. Starte med å lage en fiktiv, har ingen path, Route.
+
+Ved å omfavne (wrappe) alle rutene (de som har path=””) med <Route element={<Layout />}> får alle sidene Layout komponenten.
+
+// App.js
+...
+
+export default function App() {
+  return (
+    <>
+      <Navigation />
+      <Routes>
+        {/* Omfavner rutene med Layout */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="om" element={<About />} />
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
+Neste steg blir å bytte ut .children i Layout med Outlet. I dokumentasjonen står det at:
+'Using Outlet as a placeholder for child routes'
+Det vil si at den fungerer som props.children, men er spesifikk for React Router.
+
+// Layout.js
+
+// Importere Outlet fra React Router
+import { Outlet } from "react-router-dom";
+
+export default function Layout(props) {
+  return (
+    <main>
+      <Outlet />
+    </main>
+  );
+}
+
+Når vi omfavner ruter slik vi gjorde med Layout, får vi noe som kalles nested routes. Vi skal se mer på dette, men som vist over er det mulig å la en <Route> ha andre <Route> som barn.
+</script>>
+</body>
+</html>

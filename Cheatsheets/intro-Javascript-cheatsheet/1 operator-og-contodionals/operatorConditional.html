@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+// Mål: - Bli kjent med operators - Forstå logikken med conditionals
+
+Operatorer:
+
+Operators, eller dårlig oversatt til operatorer, er symboler som utfører noe.
+
+Matte:
+
+Pluss (+) er litt annerledes da den slår sammen tall og stringer også.
+
+1 + 2 = 3;
+'4' + 9 = '49'; // Dette gjelder kun for +
+
+5 - 4 = 1;
+3 * 3 = 9;
+15 / 5 = 3;
+
+9 % 4 = 1; // Gir rest, 8 delt på 4 blir heltall, gir 1 i rest
+
+2 ** 3 = 8; // 2^3, 2 opphøyd i 3
+
+Minske/øke:
+
+let number = 3;
+
+n += 3; // number er nå 6 (number = number + 3)
+n *= 2; // number er nå 12 (number = number * 6)
+
+++number; // 13 Øker før verdien brukes
+--number; // 12 Minsker før verdien brukes
+
+number++; // 12 Bruker verdien før den økes
+number--; // 12 Bruker verdien før den minskes
+
+Sammenligning:
+
+Returnerer true eller false. Kan brukes på alle datatyper. Legg merke til forskjellen mellom 2 og 3 erlikhetstegn (=).
+
+5 < 4; // False, 5 er ikke mindre enn 4
+3 > 2; // True, 3 er større enn 2
+
+9 <= 3; // False, 9 er ikke mindre eller lik 3
+6 >= 6; // True, 6 er større eller lik 6
+
+8 == 7; // False, 8 er ikke lik 7
+8 != 7; // True, 8 er ikke lik 7
+
+// === sjekker om datatypen er lik
+'1' == 1; // True
+'1' === 1; // False, ikke samme datatype
+
+'1' != 1; // False, begge er 1
+'1' !== 1; // True, ikke samme datatype
+
+// 0, false, " " og null er alle false
+0 == false; // True
+0 === false; // False, er ikke samme datatype
+
+Logiske:
+
+|| (ELLER), && (OG), ! (IKKE) brukes for å sjekke om noe er true eller false, eventuelt returnere true eller false.
+
+let klokke = 18;
+
+// Hvis klokke er mindre enn 18 ELLER over 18, så er det sant
+if (klokke < 18 || klokke > 18) {
+  console.log('Middag!');
+}
+
+let dag = 'mandag';
+
+// Hvis klokke er lik 18 OG dag er lik mandag, så er det sant
+if (klokke == 18 && dag === 'mandag') {
+  console.log('Pasta bolognese serveres nå!');
+}
+
+let tirsdag = true;
+console.log(!tirsdag); // false, returnerer motsatt
+
+Conditionals:
+
+Conditionals brukes til å sjekke om noe er sant/true.
+
+If, else if, else:
+
+Sjekker om første tilstand er sann, hvis ikke går vi videre. Den som er sann er den som returneres.
+
+let pizza = 'Grandiosa';
+
+if (pizza === 'BigOne') {
+  console.log('Nam!');
+} else if (pizza === 'Grandiosa') {
+  console.log('Mmm');
+} else {
+  console.log('Jaja, blir pasta da');
+}
+
+Conditional operator (ternery):
+
+Hvis man har en enkel if - else er det mulig å skrive den kortere med conditional operator, noen ganger kalt ternary operator.
+
+Anbefales ikke hvis det flere else if da koden kan bli ganske uleselig.
+
+let result = betingelse ? verdi hvis sann : verdi ellers;
+
+let pizza = 'Grandiosa';
+
+let pizzaValg = (pizza === 'BigOne') ? 'Nam!' : 'Nei takk';
+console.log(pizzaValg)
+// Skriver ut Nei takk
+
+Switch:
+Det samme som mange ifs. Sjekker om hver case stemmer med parameteret. Hvis ikke kjøres 'default'.
+
+let pizza = 'Dr. Oetker';
+
+switch (pizza) {
+  case 'Grandiosa':
+    console.log('Kjærlighet ved første bit');
+    break;
+  case 'BigOne':
+    console.log('More of the good stuff');
+    break;
+  case 'Dr. Oetker':
+    console.log('Quality is the Best Recipe');
+    break;
+  default:
+    console.log('Hjemmelagd pizza er best');
+}
+
+</script>
+
+</body>
+</html>

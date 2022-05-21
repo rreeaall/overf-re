@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* Mål: 
+        - Overordnet kjenne til de vanligste attributt-selectorer
+        - Kjenne til hvordan bruke attributt-selectorer til å hente ut HTML-elementer */
+
+Når vi trenger et spesifikt utvalg basert på f.eks hva vi har kalt klassen, id-en eller data-attributten kan vi bruke attributt selectorer. De fungerer som RegEx og prøver å finne en match med de vi leter etter.
+
+Hvilke attributt-selectorer er vanlig å bruke?
+Disse 5 under er vanlige å bruke:
+
+*= inneholder
+^= starter med
+$= slutter med
+|= inneholder ordet eller bare ordet i seg selv
+~= inneholder ordet med ta hensyn til mellomrom
+
+/* Velg p med id-er som inneholder ordet test */
+p[id*="test"] {
+  color: red;
+}
+
+/* Velg p med klasser som starter med test */
+p[class^="test"] {
+  color: blue;
+}
+
+/* Velg p med data-id som er data eller inneholder ordet data */
+p[data-id|="data"] {
+  color: orange;
+}
+
+/* Velg p med id-er som slutter med ordet id */
+p[id$="id"] {
+  color: purple;
+}
+
+/* Velg p med id-er som har ordet id alene (respekter space) */
+p[class~="b"] {
+  color: #000;
+}
+
+Her er link til hvordan koden over ser ut:
+https://rcvwx.csb.app/
+Her er en sandbox link lik: https://codesandbox.io/s/css-attr-selectors-rcvwx?from-embed
+
+Dokumentasjon:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
